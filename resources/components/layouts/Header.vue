@@ -20,7 +20,7 @@
 						<div class="user-panel">
 							<div class="up-item">
 								<i class="flaticon-profile"></i>
-								<a href="#">Sign</a> In or <a href="#">Create Account</a>
+								<router-link :to="{name: 'store.login'}">Sign In</router-link> or <router-link :to="{name: 'store.register'}">Create Account</router-link>
 							</div>
 							<div class="up-item">
 								<div class="shopping-card">

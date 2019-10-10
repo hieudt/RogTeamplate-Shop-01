@@ -22,14 +22,13 @@
 			<div class="row">
 				<div class="col-lg-6">
 					<div class="product-pic-zoom">
-						<img class="product-big-img" src="img/single-product/1.jpg" alt="">
+						<img class="product-big-img" :src="'img/single-product/'+activeImg" alt="">
 					</div>
 					<div class="product-thumbs" tabindex="1" style="overflow: hidden; outline: none;">
 						<div class="product-thumbs-track">
-							<div class="pt active" data-imgbigurl="img/single-product/1.jpg"><img src="img/single-product/thumb-1.jpg" alt=""></div>
-							<div class="pt" data-imgbigurl="img/single-product/2.jpg"><img src="img/single-product/thumb-2.jpg" alt=""></div>
-							<div class="pt" data-imgbigurl="img/single-product/3.jpg"><img src="img/single-product/thumb-3.jpg" alt=""></div>
-							<div class="pt" data-imgbigurl="img/single-product/4.jpg"><img src="img/single-product/thumb-4.jpg" alt=""></div>
+							<div v-for="item in items" class="pt" :data-imgbigurl="'img/single-product/'+item.bigimg" :class="{active:item.bigimg == activeImg}" @click="activeImg = item.bigimg">
+								<img :src="'img/single-product/'+item.img">
+							</div>
 						</div>
 					</div>
 				</div>
@@ -76,7 +75,11 @@
 					</div>
 					<div class="quantity">
 						<p>Quantity</p>
-                        <div class="pro-qty"><input type="text" value="1"></div>
+                        <div class="pro-qty">
+							<span @click="decrease" class="dec qtybtn">-</span>
+							<input type="text" value="" v-model="qty">
+							<span @click="increase" class="inc qtybtn">+</span>
+						</div>
                     </div>
 					<a href="#" class="site-btn">SHOP NOW</a>
 					<div id="accordion" class="accordion-area">
@@ -211,3 +214,32 @@
 
     </div>
 </template>
+<script>
+export default {
+	data() {
+		return {
+			qty: 1,
+			activeImg : '1.jpg',
+			items : [
+				{ id: 1, img: 'thumb-1.jpg',bigimg: '1.jpg' },
+				{ id: 2, img: 'thumb-2.jpg',bigimg: '2.jpg' },
+				{ id: 3, img: 'thumb-3.jpg',bigimg: '3.jpg' },
+				{ id: 4, img: 'thumb-4.jpg',bigimg: '4.jpg' },
+			]
+		}
+	},
+	methods: {
+		decrease: function () {
+			if (this.qty > 1) {
+				this.qty -= 1;
+			}
+		},
+		increase: function () {
+			this.qty += 1;
+		}
+	},
+	mounted() {
+		$('.product-pic-zoom').zoom();
+	}
+}
+</script>

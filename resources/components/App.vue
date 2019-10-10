@@ -9,9 +9,36 @@
             <router-view></router-view>
         </transition>
         <front-footer></front-footer>
+        <notifications group="foo" position="top right" classes="vue-notif-custom"/>
     </div>
 </template>
+<style lang="scss">
+  .vue-notif-custom {
+    padding: 10px;
+    margin: 20px 5px 5px;
 
+    font-size: 20px;
+
+    color: #ffffff;
+    background: #44A4FC;
+    border-left: 5px solid #187FE7;
+
+    &.warn {
+      background: #ffb648;
+      border-left-color: #f48a06;
+    }
+
+    &.error {
+      background: #E54D42;
+      border-left-color: #B82E24;
+    }
+
+    &.success {
+      background: #68CD86;
+      border-left-color: #42A85F;
+    }
+  }
+</style>
 <script>
     import FrontHeader from '../components/layouts/Header.vue'
     import HomePage from '../components/HomePage.vue'
@@ -21,6 +48,8 @@
         components: {
             FrontHeader,
             FrontFooter
+        },
+        methods: {
         }
     }
 </script>
