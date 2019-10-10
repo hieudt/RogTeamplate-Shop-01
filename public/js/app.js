@@ -2476,7 +2476,16 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    login: function login() {}
+    login: function login() {
+      var _this = this;
+
+      this.$store.dispatch('login', {
+        email: this.email,
+        password: this.password
+      }).then(function () {
+        return _this.$router.push('/');
+      })["catch"](function () {});
+    }
   },
   created: function created() {}
 });
@@ -2913,7 +2922,38 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  created: function created() {// console.log(this.$store.state.user);
+  },
+  computed: {
+    isLogged: function isLogged() {
+      if (this.$store.state.loggedStatus == 'success') {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    authName: function authName() {
+      return this.$store.state.user.name;
+    }
+  },
+  methods: {
+    logout: function logout() {
+      this.$store.dispatch('logout');
+      this.$router.push('/');
+    }
+  }
+});
 
 /***/ }),
 
@@ -26109,26 +26149,50 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "col-xl-4 col-lg-5" }, [
             _c("div", { staticClass: "user-panel" }, [
-              _c(
-                "div",
-                { staticClass: "up-item" },
-                [
-                  _c("i", { staticClass: "flaticon-profile" }),
-                  _vm._v(" "),
-                  _c(
-                    "router-link",
-                    { attrs: { to: { name: "store.login" } } },
-                    [_vm._v("Sign In")]
-                  ),
-                  _vm._v(" or "),
-                  _c(
-                    "router-link",
-                    { attrs: { to: { name: "store.register" } } },
-                    [_vm._v("Create Account")]
+              !_vm.isLogged
+                ? _c(
+                    "div",
+                    { staticClass: "up-item" },
+                    [
+                      _c("i", { staticClass: "flaticon-profile" }),
+                      _vm._v(" "),
+                      _c(
+                        "router-link",
+                        { attrs: { to: { name: "store.login" } } },
+                        [_vm._v("Sign In")]
+                      ),
+                      _vm._v(" or "),
+                      _c(
+                        "router-link",
+                        { attrs: { to: { name: "store.register" } } },
+                        [_vm._v("Create Account")]
+                      )
+                    ],
+                    1
                   )
-                ],
-                1
-              ),
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.isLogged
+                ? _c("div", [
+                    _c("div", { staticClass: "up-item" }, [
+                      _c("i", { staticClass: "flaticon-profile" }),
+                      _vm._v(" "),
+                      _c("span", [_vm._v(_vm._s(_vm.authName))])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "up-item" }, [
+                      _c("i", { staticClass: "flaticon-logout" }),
+                      _vm._v(" "),
+                      _c("span", [
+                        _c(
+                          "a",
+                          { attrs: { href: "#" }, on: { click: _vm.logout } },
+                          [_vm._v("Log Out")]
+                        )
+                      ])
+                    ])
+                  ])
+                : _vm._e(),
               _vm._v(" "),
               _vm._m(2)
             ])
@@ -45097,8 +45161,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_notification__WEBPACK_IMPORTED_MODULE_5___default.a);
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
-  routes: _routes__WEBPACK_IMPORTED_MODULE_3__["default"] // mode: 'history',
-
+  routes: _routes__WEBPACK_IMPORTED_MODULE_3__["default"]
 });
 window.events = new vue__WEBPACK_IMPORTED_MODULE_0___default.a();
 new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
@@ -45219,8 +45282,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../routes */ "./resources/js/routes.js");
 /* harmony import */ var q__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! q */ "./node_modules/q/q.js");
 /* harmony import */ var q__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(q__WEBPACK_IMPORTED_MODULE_6__);
-function _objectDestructuringEmpty(obj) { if (obj == null) throw new TypeError("Cannot destructure undefined"); }
-
 
 
 
@@ -45233,16 +45294,88 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   routes: _routes__WEBPACK_IMPORTED_MODULE_5__["default"]
 });
 var usersStore = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
+  getters: {
+    loggedStatus: function loggedStatus(state) {
+      return state.loggedStatus;
+    },
+    user: function user(state) {
+      return state.user;
+    }
+  },
   state: {
+    loggedStatus: '',
     users: [],
     user: {}
   },
   mutations: {
+    REGISTER_SUCCESS: function REGISTER_SUCCESS(state, msg) {
+      vue__WEBPACK_IMPORTED_MODULE_0___default.a.notify({
+        group: 'foo',
+        type: 'success',
+        text: msg
+      });
+    },
+    REGISTER_FAIL: function REGISTER_FAIL(state, msg) {
+      for (var el in msg) {
+        console.log(msg[el]);
+        vue__WEBPACK_IMPORTED_MODULE_0___default.a.notify({
+          group: 'foo',
+          type: 'error',
+          title: el,
+          text: msg[el]
+        });
+      }
+    },
     FETCH: function FETCH(state, users) {
       state.users = users;
     },
     FETCH_ONE: function FETCH_ONE(state, user) {
       state.user = user;
+    },
+    LOGIN_REQUEST: function LOGIN_REQUEST(state) {
+      state.loggedStatus = 'loading';
+    },
+    LOGIN_SUCCESS: function LOGIN_SUCCESS(state, user) {
+      vue__WEBPACK_IMPORTED_MODULE_0___default.a.notify({
+        group: 'foo',
+        type: 'success',
+        text: 'Login successfully'
+      });
+      state.loggedStatus = 'success';
+      state.user = user;
+    },
+    LOGIN_ERROR: function LOGIN_ERROR(state, msg) {
+      var flag = true;
+
+      for (var el in msg) {
+        console.log(msg[el]);
+        vue__WEBPACK_IMPORTED_MODULE_0___default.a.notify({
+          group: 'foo',
+          type: 'error',
+          title: el,
+          text: msg[el]
+        });
+        flag = false;
+      }
+
+      if (flag) {
+        vue__WEBPACK_IMPORTED_MODULE_0___default.a.notify({
+          group: 'foo',
+          type: 'error',
+          text: 'Login fail'
+        });
+      }
+
+      state.loggedStatus = 'error';
+    },
+    LOGOUT: function LOGOUT(state) {
+      vue__WEBPACK_IMPORTED_MODULE_0___default.a.notify({
+        group: 'foo',
+        type: 'success',
+        text: 'Logout Success'
+      });
+      state.loggedStatus = '';
+      state.user = {};
     }
   },
   actions: {
@@ -45259,8 +45392,7 @@ var usersStore = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
       })["catch"]();
     },
     addUser: function addUser(_ref3, user) {
-      _objectDestructuringEmpty(_ref3);
-
+      var commit = _ref3.commit;
       return new Promise(function (resolve, reject) {
         axios__WEBPACK_IMPORTED_MODULE_3___default.a.post("".concat(_api__WEBPACK_IMPORTED_MODULE_4__["RESOURCE_USER"]), {
           name: user.name,
@@ -45268,28 +45400,36 @@ var usersStore = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
           password: user.password,
           repassword: user.repassword
         }).then(function (response) {
-          vue__WEBPACK_IMPORTED_MODULE_0___default.a.notify({
-            group: 'foo',
-            type: 'success',
-            text: 'Account register success fully'
-          });
+          commit('REGISTER_SUCCESS', 'Succs');
           resolve(response);
         })["catch"](function (data) {
           var errs = data.response.data.errors;
-
-          for (var el in errs) {
-            console.log(errs[el]);
-            vue__WEBPACK_IMPORTED_MODULE_0___default.a.notify({
-              group: 'foo',
-              type: 'error',
-              title: el,
-              text: errs[el]
-            });
-          }
-
+          commit('REGISTER_FAIL', errs);
           reject(data);
         });
       });
+    },
+    login: function login(_ref4, user) {
+      var commit = _ref4.commit;
+      return new Promise(function (resolve, reject) {
+        commit('LOGIN_REQUEST');
+        axios__WEBPACK_IMPORTED_MODULE_3___default.a.post("".concat(_api__WEBPACK_IMPORTED_MODULE_4__["RESOURCE_USER"], "/auth"), {
+          email: user.email,
+          password: user.password
+        }).then(function (response) {
+          commit('LOGIN_SUCCESS', response.data.user);
+          console.log(response.data.user);
+          resolve(response);
+        })["catch"](function (data) {
+          var errs = data.response.data.errors;
+          commit('LOGIN_ERROR', errs);
+          reject(data);
+        });
+      });
+    },
+    logout: function logout(_ref5) {
+      var commit = _ref5.commit;
+      commit('LOGOUT');
     }
   }
 });

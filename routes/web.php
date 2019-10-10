@@ -12,7 +12,8 @@
 */
 
 Route::group(['prefix' => 'api'], function () {
-    Route::resource('users', 'UserController');    
+    Route::resource('users', 'AuthController');
+    Route::post('users/auth', 'AuthController@login');    
 });
 
 Route::view('/{any}', 'app')

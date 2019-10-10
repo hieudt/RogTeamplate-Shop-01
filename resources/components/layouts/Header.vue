@@ -18,9 +18,19 @@
 					</div>
 					<div class="col-xl-4 col-lg-5">
 						<div class="user-panel">
-							<div class="up-item">
+							<div class="up-item" v-if="!isLogged">
 								<i class="flaticon-profile"></i>
 								<router-link :to="{name: 'store.login'}">Sign In</router-link> or <router-link :to="{name: 'store.register'}">Create Account</router-link>
+							</div>
+							<div v-if="isLogged">
+								<div class="up-item">
+									<i class="flaticon-profile"></i>
+									<span>{{ authName }}</span>
+								</div>
+								<div class="up-item">
+									<i class="flaticon-logout"></i>
+									<span><a href="#" @click="logout">Log Out</a></span>
+								</div>
 							</div>
 							<div class="up-item">
 								<div class="shopping-card">
@@ -72,6 +82,26 @@
 
 <script>
 export default {
-    
+	created() {
+		// console.log(this.$store.state.user);
+	},
+    computed: {
+		isLogged() {
+			if (this.$store.state.loggedStatus == 'success') {
+				return true;
+			} else {
+				return false;
+			}
+		},
+		authName() {
+			return this.$store.state.user.name;
+		}
+	},
+	methods: {
+		logout() {
+			this.$store.dispatch('logout')
+			this.$router.push('/')
+		}
+	}
 }
 </script>

@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+use App\Http\Requests\UserLoginRequest;
 use App\User;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class AuthController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -29,7 +32,11 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         $data = $request->validated();
-        return User::create($data);;
+        return User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
     }
 
     /**
@@ -88,5 +95,37 @@ class UserController extends Controller
         }
 
         return response()->json($user);
+    }
+
+    /**
+     * Login function
+     *
+     * @param Request $request
+     * @return json
+     */
+    public function login(UserLoginRequest $request)
+    {
+        $request->validated();
+        $credentials = request(['email', 'password']);
+
+        if (!Auth::attempt($credentials)) {
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], 401);
+        }
+
+        $user = $request->user();
+        $tokenResult = $user->createToken('Personal Access Token');
+        $token = $tokenResult->token;
+        $token->save();
+
+        return response()->json([
+            'user' => $user,
+            'access_token' => $tokenResult->accessToken,
+            'token_type' => 'Bearer',
+            'expires_at' => Carbon::parse(
+                $tokenResult->token->expires_at
+            )->toDateTimeString()
+        ]);
     }
 }

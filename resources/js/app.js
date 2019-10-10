@@ -13,7 +13,6 @@ Vue.use(Notifications);
 
 const router = new VueRouter({
     routes,
-    // mode: 'history',
 });
 window.events = new Vue();
 

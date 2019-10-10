@@ -44,7 +44,7 @@
 </template>
 <script>
 export default {
-    data: function () {
+    data() {
         return {
             email: null,
             password: null,
@@ -52,7 +52,12 @@ export default {
     },
     methods: {
         login: function () {
-            
+            this.$store.dispatch('login', {
+				email: this.email,
+				password: this.password
+			})
+			.then(() => this.$router.push('/'))
+			.catch(() => {})
         }
     },
     created() {
