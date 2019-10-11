@@ -9,9 +9,13 @@ import usersStore from './store/usersStore'
 import VueI18n from 'vue-i18n'
 import Notifications from 'vue-notification'
 import i18n from './lang/i18n'
+import VueLazyload from 'vue-lazyload'
 
 Vue.use(VueRouter);
 Vue.use(Notifications);
+Vue.use(VueLazyload, {
+    loading: 'https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif',
+});
 
 
 const router = new VueRouter({

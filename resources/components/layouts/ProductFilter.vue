@@ -15,11 +15,11 @@
 				<li><a href="#">JUMPERS</a></li>
 				<li><a href="#">LEGGINGS</a></li>
 			</ul>
-			<div class="row">
+			<div class="row" v-lazy-container="{ selector: 'img' }" >
 				<div class="col-lg-3 col-sm-6">
 					<div class="product-item">
 						<div class="pi-pic">
-							<img src="img/product/5.jpg" alt="">
+							<img data-src="img/product/5.jpg" alt="">
 							<div class="pi-links">
 								<a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
 								<a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
@@ -35,7 +35,7 @@
 					<div class="product-item">
 						<div class="pi-pic">
 							<div class="tag-sale">ON SALE</div>
-							<img src="img/product/6.jpg" alt="">
+							<img data-src="img/product/6.jpg" alt="">
 							<div class="pi-links">
 								<a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
 								<a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
@@ -50,7 +50,7 @@
 				<div class="col-lg-3 col-sm-6">
 					<div class="product-item">
 						<div class="pi-pic">
-							<img src="img/product/7.jpg" alt="">
+							<img data-src="img/product/7.jpg" alt="">
 							<div class="pi-links">
 								<a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
 								<a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
@@ -65,7 +65,7 @@
 				<div class="col-lg-3 col-sm-6">
 					<div class="product-item">
 						<div class="pi-pic">
-							<img src="img/product/8.jpg" alt="">
+							<img data-src="img/product/8.jpg" alt="">
 							<div class="pi-links">
 								<a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
 								<a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
@@ -80,7 +80,7 @@
 				<div class="col-lg-3 col-sm-6">
 					<div class="product-item">
 						<div class="pi-pic">
-							<img src="img/product/9.jpg" alt="">
+							<img data-src="img/product/9.jpg" alt="">
 							<div class="pi-links">
 								<a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
 								<a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
@@ -95,7 +95,7 @@
 				<div class="col-lg-3 col-sm-6">
 					<div class="product-item">
 						<div class="pi-pic">
-							<img src="img/product/10.jpg" alt="">
+							<img data-src="img/product/10.jpg" alt="">
 							<div class="pi-links">
 								<a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
 								<a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
@@ -110,7 +110,7 @@
 				<div class="col-lg-3 col-sm-6">
 					<div class="product-item">
 						<div class="pi-pic">
-							<img src="img/product/11.jpg" alt="">
+							<img data-src="img/product/11.jpg" alt="">
 							<div class="pi-links">
 								<a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
 								<a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
@@ -125,7 +125,7 @@
 				<div class="col-lg-3 col-sm-6">
 					<div class="product-item">
 						<div class="pi-pic">
-							<img src="img/product/12.jpg" alt="">
+							<img data-src="img/product/12.jpg" alt="">
 							<div class="pi-links">
 								<a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
 								<a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>

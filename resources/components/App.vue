@@ -1,9 +1,9 @@
 <template>
     <div>
         <!-- Page Preloder -->
-        <div id="preloder">
+        <!-- <div id="preloder">
             <div class="loader"></div>
-        </div>
+        </div> -->
         <front-header></front-header>
         <transition name="router-anim">
             <router-view></router-view>
