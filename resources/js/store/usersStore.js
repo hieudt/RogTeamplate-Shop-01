@@ -4,7 +4,9 @@ import Vuex from 'vuex';
 import axios from 'axios';
 import {RESOURCE_USER} from '../api';
 import routes from '../routes';
+import app from '../app';
 import { resolve, reject } from 'q';
+
 
 Vue.use(Vuex)
 
@@ -14,6 +16,7 @@ const router = new VueRouter({
 
 const usersStore = new Vuex.Store({
     getters: {
+        locale: state => state.locale,
         loggedStatus: state => state.loggedStatus,
         user: state => state.user,
     },
@@ -21,6 +24,7 @@ const usersStore = new Vuex.Store({
         loggedStatus: '',
         users: [],
         user: {},
+        locale: 'en'
     },
     mutations: {
         REGISTER_SUCCESS(state, msg) {
@@ -89,6 +93,10 @@ const usersStore = new Vuex.Store({
             })
             state.loggedStatus = ''
             state.user = {}
+        },
+        SET_LANG(state, payload) {
+            console.log(payload);
+            app.$i18n.locale = payload
         }
     },
     actions: {
@@ -142,6 +150,9 @@ const usersStore = new Vuex.Store({
         },
         logout({commit}) {
             commit('LOGOUT')
+        },
+        setLang({ commit }, payload) {
+            commit('SET_LANG', payload)
         }
     }
 });

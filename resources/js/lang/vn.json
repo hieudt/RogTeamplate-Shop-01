@@ -1,0 +1,47 @@
+{
+    "common": {
+        "select_lang": "Ngôn ngữ",
+        "home_page" : "Trang chủ",
+        "or" : "hoặc"
+    },
+    "search" : {
+        "placeholder" : "Nhập tìm kiếm tại đây ..."
+    },
+    "cart" : {
+        "minicart" : "Giỏ Hàng"
+    },
+    "login": {
+        "breadcrumb": "Đăng nhập",
+        "title": "Đăng nhập",
+        "buttons": {
+            "login": "Đăng nhập"
+        },
+        "input_text": {
+            "email": "Địa chỉ email",
+            "password": "Mật khẩu"
+        }
+    },
+    "register" : {
+        "breadcrumb" : "Đăng ký",
+        "title" : "Đăng ký",
+        "buttons" : {
+            "signup" : "Đăng ký"
+        },
+        "input_text" : {
+            "name" : "Họ và tên",
+            "email" : "Địa chỉ email",
+            "password" :"Mật khẩu",
+            "repassword" : "Nhập lại mật khẩu"
+        }
+    },
+    "logout" : {
+        "title" : "Đăng xuất"
+    },
+    "homepage" : {
+        "feature" : {
+            "payment" : "THANH TOÁN NHANH CHÓNG",
+            "premium" : "SẢN PHẨM CAO CẤP",
+            "delivery" : "MIỄN PHÍ GIAO HÀNG"
+        }
+    }
+}

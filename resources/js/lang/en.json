@@ -1,0 +1,47 @@
+{
+    "common": {
+        "select_lang": "Language",
+        "home_page" : "Home page",
+        "or" : "or"
+    },
+    "search" : {
+        "placeholder" : "Search on here ..."
+    },
+    "cart" : {
+        "minicart" : "Shopping Cart"
+    },
+    "login": {
+        "breadcrumb": "Login",
+        "title": "Login",
+        "buttons": {
+            "login": "Login"
+        },
+        "input_text": {
+            "email": "Email",
+            "password": "Password"
+        }
+    },
+    "register" : {
+        "breadcrumb" : "Register",
+        "title" : "Register",
+        "buttons" : {
+            "signup" : "Register"
+        },
+        "input_text" : {
+            "name" : "Full Name",
+            "email" : "Email",
+            "password" :"Password",
+            "repassword" : "Re Password"
+        }
+    },
+    "logout" : {
+        "title" : "Log out"
+    },
+    "homepage" : {
+        "feature" : {
+            "payment" : "FAST SECURE PAYMENTS",
+            "premium" : "PREMIUM PRODUCTS",
+            "delivery" : "FREE & FAST DELIVERY"
+        }
+    }
+}

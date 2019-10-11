@@ -12,7 +12,7 @@
 					</div>
 					<div class="col-xl-6 col-lg-5">
 						<form class="header-search-form">
-							<input type="text" placeholder="Search on divisima ....">
+							<input type="text" :placeholder="$t('search.placeholder')" />
 							<button><i class="flaticon-search"></i></button>
 						</form>
 					</div>
@@ -20,7 +20,7 @@
 						<div class="user-panel">
 							<div class="up-item" v-if="!isLogged">
 								<i class="flaticon-profile"></i>
-								<router-link :to="{name: 'store.login'}">Sign In</router-link> or <router-link :to="{name: 'store.register'}">Create Account</router-link>
+								<router-link :to="{name: 'store.login'}">{{ $t("login.title") }}</router-link> {{ $t("common.or") }} <router-link :to="{name: 'store.register'}">{{ $t("register.title") }}</router-link>
 							</div>
 							<div v-if="isLogged">
 								<div class="up-item">
@@ -29,7 +29,7 @@
 								</div>
 								<div class="up-item">
 									<i class="flaticon-logout"></i>
-									<span><a href="#" @click="logout">Log Out</a></span>
+									<span><a href="#" @click="logout">{{ $t("logout.title") }}</a></span>
 								</div>
 							</div>
 							<div class="up-item">
@@ -37,7 +37,7 @@
 									<i class="flaticon-bag"></i>
 									<span>0</span>
 								</div>
-								<a href="#">Shopping Cart</a>
+								<a href="#">{{ $t('cart.minicart') }}</a>
 							</div>
 						</div>
 					</div>
@@ -48,7 +48,7 @@
 			<div class="container">
 				<!-- menu -->
 				<ul class="main-menu">
-					<li><router-link :to="{name: 'store.index'}">Home Page</router-link></li>
+					<li><router-link :to="{name: 'store.index'}">{{ $t('common.home_page') }}</router-link></li>
 					<li><a href="#">Women</a></li>
 					<li><a href="#">Men</a></li>
 					<li><a href="#">Jewelry
@@ -72,7 +72,13 @@
 							<li><a href="./contact.html">Contact Page</a></li>
 						</ul>
 					</li>
-					<li><a href="#">Blog</a></li>
+					<li><a href="#">{{ $t('common.select_lang') }}</a>
+						<ul class="sub-menu">
+							<li v-for="lang in optionsLangs" @click.prevent="callSetLangActions">
+								<a href="#" :value="lang.value">{{ lang.text }}</a>
+							</li>
+						</ul>
+					</li>
 				</ul>
 			</div>
 		</nav>
@@ -82,8 +88,21 @@
 
 <script>
 export default {
+	data() {
+        return {
+            optionsLangs: [
+				{
+					text: 'Vietnamese',
+					value: 'vn',
+				},
+				{
+					text: 'English',
+					value: 'en',
+				}
+			]
+        }
+    },
 	created() {
-		// console.log(this.$store.state.user);
 	},
     computed: {
 		isLogged() {
@@ -101,6 +120,10 @@ export default {
 		logout() {
 			this.$store.dispatch('logout')
 			this.$router.push('/')
+		},
+		callSetLangActions(event) {
+			console.log(event.target.getAttribute('value'));
+			this.$store.dispatch('setLang', event.target.getAttribute('value'))
 		}
 	}
 }
