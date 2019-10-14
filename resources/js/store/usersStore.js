@@ -2,13 +2,17 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Vuex from 'vuex';
 import axios from 'axios';
-import {RESOURCE_USER} from '../api';
+import { RESOURCE_USER } from '../api';
 import routes from '../routes';
 import app from '../app';
 import { resolve, reject } from 'q';
-
+import { getLocalUser } from '../helpers/auth';
+import { getLoggedStatus } from '../helpers/auth';
 
 Vue.use(Vuex)
+
+const user = getLocalUser();
+const loggedStatus = getLoggedStatus();
 
 const router = new VueRouter({
     routes,
@@ -19,11 +23,12 @@ const usersStore = new Vuex.Store({
         locale: state => state.locale,
         loggedStatus: state => state.loggedStatus,
         user: state => state.user,
+        userName: state => state.user.name,
     },
     state: {
-        loggedStatus: '',
+        loggedStatus: loggedStatus,
         users: [],
-        user: {},
+        user: user,
         locale: 'en'
     },
     mutations: {
@@ -61,7 +66,8 @@ const usersStore = new Vuex.Store({
                 text: 'Login successfully'
             })
             state.loggedStatus = 'success'
-            state.user = user
+            state.user = Object.assign({}, user, { token: user.access_token });
+            localStorage.setItem('user', JSON.stringify(state.user))
         },
         LOGIN_ERROR(state, msg) {
             let flag = true;
@@ -75,7 +81,7 @@ const usersStore = new Vuex.Store({
                 })
                 flag = false;
             }
-            
+
             if (flag) {
                 Vue.notify({
                     group: 'foo',
@@ -92,7 +98,8 @@ const usersStore = new Vuex.Store({
                 text: 'Logout Success'
             })
             state.loggedStatus = ''
-            state.user = {}
+            state.user = user
+            localStorage.removeItem("user");
         },
         SET_LANG(state, payload) {
             console.log(payload);
@@ -118,37 +125,37 @@ const usersStore = new Vuex.Store({
                     password: user.password,
                     repassword: user.repassword
                 })
-                .then(function (response){
-                    commit('REGISTER_SUCCESS', 'Succs')
-                    resolve(response)
-                })
-                .catch(function (data) {
-                    let errs = data.response.data.errors;
-                    commit('REGISTER_FAIL', errs)
-                    reject(data)
-                })
+                    .then(function (response) {
+                        commit('REGISTER_SUCCESS', 'Succs')
+                        resolve(response)
+                    })
+                    .catch(function (data) {
+                        let errs = data.response.data.errors;
+                        commit('REGISTER_FAIL', errs)
+                        reject(data)
+                    })
             })
         },
-        login({commit}, user) {
+        login({ commit }, user) {
             return new Promise((resolve, reject) => {
                 commit('LOGIN_REQUEST')
                 axios.post(`${RESOURCE_USER}/auth`, {
                     email: user.email,
                     password: user.password,
                 })
-                .then(function (response){
-                    commit('LOGIN_SUCCESS', response.data.user)
-                    console.log(response.data.user);
-                    resolve(response)
-                })
-                .catch(function (data) {
-                    let errs = data.response.data.errors;
-                    commit('LOGIN_ERROR', errs)
-                    reject(data)
-                })
+                    .then(function (response) {
+                        commit('LOGIN_SUCCESS', response.data.user)
+                        console.log(response.data.user);
+                        resolve(response)
+                    })
+                    .catch(function (data) {
+                        let errs = data.response.data.errors;
+                        commit('LOGIN_ERROR', errs)
+                        reject(data)
+                    })
             })
         },
-        logout({commit}) {
+        logout({ commit }) {
             commit('LOGOUT')
         },
         setLang({ commit }, payload) {

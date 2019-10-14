@@ -2938,39 +2938,77 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       optionsLangs: [{
-        text: 'Vietnamese',
-        value: 'vn'
+        text: "Vietnamese",
+        value: "vn"
       }, {
-        text: 'English',
-        value: 'en'
+        text: "English",
+        value: "en"
       }]
     };
   },
   created: function created() {},
   computed: {
     isLogged: function isLogged() {
-      if (this.$store.state.loggedStatus == 'success') {
+      if (this.$store.state.loggedStatus == "success") {
         return true;
       } else {
         return false;
       }
     },
-    authName: function authName() {
-      return this.$store.state.user.name;
+    user: function user() {
+      return this.$store.getters.user;
     }
   },
   methods: {
     logout: function logout() {
-      this.$store.dispatch('logout');
-      this.$router.push('/');
+      this.$store.dispatch("logout");
+      this.$router.push("/");
     },
     callSetLangActions: function callSetLangActions(event) {
-      console.log(event.target.getAttribute('value'));
-      this.$store.dispatch('setLang', event.target.getAttribute('value'));
+      console.log(event.target.getAttribute("value"));
+      this.$store.dispatch("setLang", event.target.getAttribute("value"));
     }
   }
 });
@@ -28160,7 +28198,11 @@ var render = function() {
                         { attrs: { to: { name: "store.login" } } },
                         [_vm._v(_vm._s(_vm.$t("login.title")))]
                       ),
-                      _vm._v(" " + _vm._s(_vm.$t("common.or")) + " "),
+                      _vm._v(
+                        "\n              " +
+                          _vm._s(_vm.$t("common.or")) +
+                          "\n              "
+                      ),
                       _c(
                         "router-link",
                         { attrs: { to: { name: "store.register" } } },
@@ -28176,7 +28218,7 @@ var render = function() {
                     _c("div", { staticClass: "up-item" }, [
                       _c("i", { staticClass: "flaticon-profile" }),
                       _vm._v(" "),
-                      _c("span", [_vm._v(_vm._s(_vm.authName))])
+                      _c("span", [_vm._v(_vm._s(_vm.user.name))])
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "up-item" }, [
@@ -28360,7 +28402,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("li", [
       _c("a", { attrs: { href: "#" } }, [
-        _vm._v("Jewelry\n\t\t\t\t\t\t"),
+        _vm._v("\n            Jewelry\n            "),
         _c("span", { staticClass: "new" }, [_vm._v("New")])
       ])
     ])
@@ -47183,6 +47225,20 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   routes: _routes__WEBPACK_IMPORTED_MODULE_3__["default"]
 });
 window.events = new vue__WEBPACK_IMPORTED_MODULE_0___default.a();
+router.beforeEach(function (to, from, next) {
+  var requiresAuth = to.matched.some(function (record) {
+    return record.meta.requiresAuth;
+  });
+  var currentUser = _store_usersStore__WEBPACK_IMPORTED_MODULE_4__["default"].state.user;
+
+  if (requiresAuth && !currentUser) {
+    next('/login');
+  } else if (to.path == '/login' && currentUser) {
+    next('/');
+  } else {
+    next();
+  }
+});
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app',
   render: function render(h) {
@@ -47225,6 +47281,38 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/helpers/auth.js":
+/*!**************************************!*\
+  !*** ./resources/js/helpers/auth.js ***!
+  \**************************************/
+/*! exports provided: getLocalUser, getLoggedStatus */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getLocalUser", function() { return getLocalUser; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getLoggedStatus", function() { return getLoggedStatus; });
+function getLocalUser() {
+  var userStr = localStorage.getItem('user');
+
+  if (!userStr) {
+    return null;
+  }
+
+  return JSON.parse(userStr);
+}
+function getLoggedStatus() {
+  var userStr = localStorage.getItem('user');
+
+  if (!userStr) {
+    return 'error';
+  }
+
+  return 'success';
+}
 
 /***/ }),
 
@@ -47361,6 +47449,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../app */ "./resources/js/app.js");
 /* harmony import */ var q__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! q */ "./node_modules/q/q.js");
 /* harmony import */ var q__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(q__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _helpers_auth__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../helpers/auth */ "./resources/js/helpers/auth.js");
+
+
 
 
 
@@ -47370,6 +47461,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__["default"]);
+var user = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_8__["getLocalUser"])();
+var loggedStatus = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_8__["getLoggedStatus"])();
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   routes: _routes__WEBPACK_IMPORTED_MODULE_5__["default"]
 });
@@ -47383,12 +47476,15 @@ var usersStore = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
     },
     user: function user(state) {
       return state.user;
+    },
+    userName: function userName(state) {
+      return state.user.name;
     }
   },
   state: {
-    loggedStatus: '',
+    loggedStatus: loggedStatus,
     users: [],
-    user: {},
+    user: user,
     locale: 'en'
   },
   mutations: {
@@ -47426,7 +47522,10 @@ var usersStore = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
         text: 'Login successfully'
       });
       state.loggedStatus = 'success';
-      state.user = user;
+      state.user = Object.assign({}, user, {
+        token: user.access_token
+      });
+      localStorage.setItem('user', JSON.stringify(state.user));
     },
     LOGIN_ERROR: function LOGIN_ERROR(state, msg) {
       var flag = true;
@@ -47459,7 +47558,8 @@ var usersStore = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
         text: 'Logout Success'
       });
       state.loggedStatus = '';
-      state.user = {};
+      state.user = user;
+      localStorage.removeItem("user");
     },
     SET_LANG: function SET_LANG(state, payload) {
       console.log(payload);
@@ -47547,8 +47647,8 @@ var usersStore = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/duong.trung.hieu/shop-qa/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/duong.trung.hieu/shop-qa/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/trunghieu/workspace/RogTeamplate-Shop-01/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/trunghieu/workspace/RogTeamplate-Shop-01/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

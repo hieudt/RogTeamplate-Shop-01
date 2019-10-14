@@ -1,0 +1,19 @@
+export function getLocalUser() {
+    const userStr = localStorage.getItem('user');
+
+    if (!userStr) {
+        return null;
+    }
+
+    return JSON.parse(userStr);
+}
+
+export function getLoggedStatus() {
+    const userStr = localStorage.getItem('user');
+
+    if (!userStr) {
+        return 'error';
+    }
+
+    return 'success';
+}
