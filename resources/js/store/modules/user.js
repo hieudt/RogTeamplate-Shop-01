@@ -1,24 +1,14 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
+import app from '../../app';
 import axios from 'axios';
-import {RESOURCE_USER} from '../api';
-import app from '../app';
+import {RESOURCE_USER} from '../../api';
 import { resolve, reject } from 'q';
-import { getLocalUser } from '../helpers/auth';
-import createPersistedState from 'vuex-persistedstate';
-import Cookies from 'js-cookie'
 
-Vue.use(Vuex)
-
-
-const currentUser = getLocalUser();
-const loggedStatus = getLocalUser(true);
-
-const usersStore = new Vuex.Store({
+export default {
+    namespaced: true,
     getters: {
         locale: state => state.locale,
         loggedStatus: state => state.loggedStatus,
-        user: state => state.user,
+        getUser: state => state.user,
     },
     state: {
         loggedStatus: false,
@@ -26,13 +16,6 @@ const usersStore = new Vuex.Store({
         user: '',
         locale: 'en'
     },
-    plugins: [createPersistedState({
-        storage: {
-            getItem: key => Cookies.get(key),
-            setItem: (key, value) => Cookies.set(key, value, { expires: 3, secure: false }),
-            removeItem: key => Cookies.remove(key)
-        }
-    })],
     mutations: {
         REGISTER_SUCCESS(state, msg) {
             Vue.notify({
@@ -158,10 +141,6 @@ const usersStore = new Vuex.Store({
         setLang({ commit }, payload) {
             commit('SET_LANG', payload)
         },
-        increment({ commit }) {
-            commit('increment')
-        }
-    }
-});
+    },
+}
 
-export default usersStore;

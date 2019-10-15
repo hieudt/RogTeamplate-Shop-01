@@ -106,26 +106,24 @@ export default {
         }
     },
 	created() {
+		
 	},
     computed: {
-		...mapState([
-			'loggedStatus'
-		]),
-		...mapGetters([
-			'user'
-		])
+		...mapState({
+			loggedStatus: state => state.user.loggedStatus
+		}),
+		...mapGetters({
+			user : 'user/getUser'
+		})
 	},
 	methods: {
-		increment() {
-			this.$store.dispatch('increment')
-		},
 		logout() {
-			this.$store.dispatch('logout')
+			this.$store.dispatch('user/logout')
 			this.$router.push('/')
 		},
 		callSetLangActions(event) {
 			console.log(event.target.getAttribute('value'));
-			this.$store.dispatch('setLang', event.target.getAttribute('value'))
+			this.$store.dispatch('user/setLang', event.target.getAttribute('value'))
 		}
 	}
 }

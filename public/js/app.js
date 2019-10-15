@@ -2424,6 +2424,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 //
 //
 //
@@ -2468,6 +2469,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2479,7 +2481,7 @@ __webpack_require__.r(__webpack_exports__);
     login: function login() {
       var _this = this;
 
-      this.$store.dispatch('login', {
+      this.$store.dispatch('user/login', {
         email: this.email,
         password: this.password
       }).then(function () {
@@ -2960,18 +2962,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   created: function created() {},
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['loggedStatus']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['user'])),
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
+    loggedStatus: function loggedStatus(state) {
+      return state.user.loggedStatus;
+    }
+  }), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    user: 'user/getUser'
+  })),
   methods: {
-    increment: function increment() {
-      this.$store.dispatch('increment');
-    },
     logout: function logout() {
-      this.$store.dispatch('logout');
+      this.$store.dispatch('user/logout');
       this.$router.push('/');
     },
     callSetLangActions: function callSetLangActions(event) {
       console.log(event.target.getAttribute('value'));
-      this.$store.dispatch('setLang', event.target.getAttribute('value'));
+      this.$store.dispatch('user/setLang', event.target.getAttribute('value'));
     }
   }
 });
@@ -49385,7 +49390,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var _components_App_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/App.vue */ "./resources/components/App.vue");
 /* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
-/* harmony import */ var _store_usersStore__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./store/usersStore */ "./resources/js/store/usersStore.js");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./store */ "./resources/js/store/index.js");
 /* harmony import */ var vue_i18n__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-i18n */ "./node_modules/vue-i18n/dist/vue-i18n.esm.js");
 /* harmony import */ var vue_notification__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue-notification */ "./node_modules/vue-notification/dist/index.js");
 /* harmony import */ var vue_notification__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vue_notification__WEBPACK_IMPORTED_MODULE_6__);
@@ -49416,7 +49421,7 @@ router.beforeEach(function (to, from, next) {
   var requiresAuth = to.matched.some(function (record) {
     return record.meta.requiresAuth;
   });
-  var currentUser = _store_usersStore__WEBPACK_IMPORTED_MODULE_4__["default"].state.user;
+  var currentUser = _store__WEBPACK_IMPORTED_MODULE_4__["default"].state.user.user;
 
   if (requiresAuth && !currentUser) {
     next('/login');
@@ -49433,7 +49438,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   },
   i18n: _lang_i18n__WEBPACK_IMPORTED_MODULE_7__["default"],
   router: router,
-  store: _store_usersStore__WEBPACK_IMPORTED_MODULE_4__["default"]
+  store: _store__WEBPACK_IMPORTED_MODULE_4__["default"]
 });
 /* harmony default export */ __webpack_exports__["default"] = (app);
 
@@ -49468,30 +49473,6 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
-
-/***/ }),
-
-/***/ "./resources/js/helpers/auth.js":
-/*!**************************************!*\
-  !*** ./resources/js/helpers/auth.js ***!
-  \**************************************/
-/*! exports provided: getLocalUser */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getLocalUser", function() { return getLocalUser; });
-function getLocalUser(flag) {
-  var userStr = localStorage.getItem('user');
-
-  if (!userStr) {
-    if (flag) return false;
-    return null;
-  }
-
-  if (flag) return true;
-  return JSON.parse(userStr);
-}
 
 /***/ }),
 
@@ -49614,10 +49595,34 @@ var routes = [{
 
 /***/ }),
 
-/***/ "./resources/js/store/usersStore.js":
-/*!******************************************!*\
-  !*** ./resources/js/store/usersStore.js ***!
-  \******************************************/
+/***/ "./resources/js/store/getters.js":
+/*!***************************************!*\
+  !*** ./resources/js/store/getters.js ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var getters = {
+  locale: function locale(state) {
+    return state.locale;
+  },
+  loggedStatus: function loggedStatus(state) {
+    return state.loggedStatus;
+  },
+  user: function user(state) {
+    return state.user;
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = (getters);
+
+/***/ }),
+
+/***/ "./resources/js/store/index.js":
+/*!*************************************!*\
+  !*** ./resources/js/store/index.js ***!
+  \*************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -49626,29 +49631,105 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../api */ "./resources/js/api.js");
-/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../app */ "./resources/js/app.js");
-/* harmony import */ var q__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! q */ "./node_modules/q/q.js");
-/* harmony import */ var q__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(q__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _helpers_auth__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../helpers/auth */ "./resources/js/helpers/auth.js");
-/* harmony import */ var vuex_persistedstate__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vuex-persistedstate */ "./node_modules/vuex-persistedstate/dist/vuex-persistedstate.es.js");
-/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! js-cookie */ "./node_modules/js-cookie/src/js.cookie.js");
-/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(js_cookie__WEBPACK_IMPORTED_MODULE_8__);
-
-
-
-
+/* harmony import */ var vuex_persistedstate__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex-persistedstate */ "./node_modules/vuex-persistedstate/dist/vuex-persistedstate.es.js");
+/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! js-cookie */ "./node_modules/js-cookie/src/js.cookie.js");
+/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(js_cookie__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _getters__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./getters */ "./resources/js/store/getters.js");
 
 
 
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
-var currentUser = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_6__["getLocalUser"])();
-var loggedStatus = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_6__["getLocalUser"])(true);
-var usersStore = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
+
+var modulesFiles = __webpack_require__("./resources/js/store/modules sync recursive \\.js$"); // Auto require module file
+
+
+var modules = modulesFiles.keys().reduce(function (modules, modulePath) {
+  var moduleName = modulePath.replace(/^\.\/(.*)\.\w+$/, '$1');
+  var value = modulesFiles(modulePath);
+  modules[moduleName] = value["default"];
+  return modules;
+}, {});
+var index = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
+  modules: modules,
+  getters: _getters__WEBPACK_IMPORTED_MODULE_4__["default"],
+  state: {},
+  plugins: [Object(vuex_persistedstate__WEBPACK_IMPORTED_MODULE_2__["default"])({
+    storage: {
+      getItem: function getItem(key) {
+        return js_cookie__WEBPACK_IMPORTED_MODULE_3___default.a.get(key);
+      },
+      setItem: function setItem(key, value) {
+        return js_cookie__WEBPACK_IMPORTED_MODULE_3___default.a.set(key, value, {
+          expires: 3,
+          secure: false
+        });
+      },
+      removeItem: function removeItem(key) {
+        return js_cookie__WEBPACK_IMPORTED_MODULE_3___default.a.remove(key);
+      }
+    }
+  })]
+});
+/* harmony default export */ __webpack_exports__["default"] = (index);
+
+/***/ }),
+
+/***/ "./resources/js/store/modules sync recursive \\.js$":
+/*!***********************************************!*\
+  !*** ./resources/js/store/modules sync \.js$ ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"./user.js": "./resources/js/store/modules/user.js"
+};
+
+
+function webpackContext(req) {
+	var id = webpackContextResolve(req);
+	return __webpack_require__(id);
+}
+function webpackContextResolve(req) {
+	if(!__webpack_require__.o(map, req)) {
+		var e = new Error("Cannot find module '" + req + "'");
+		e.code = 'MODULE_NOT_FOUND';
+		throw e;
+	}
+	return map[req];
+}
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = "./resources/js/store/modules sync recursive \\.js$";
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/user.js":
+/*!********************************************!*\
+  !*** ./resources/js/store/modules/user.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../app */ "./resources/js/app.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../api */ "./resources/js/api.js");
+/* harmony import */ var q__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! q */ "./node_modules/q/q.js");
+/* harmony import */ var q__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(q__WEBPACK_IMPORTED_MODULE_3__);
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
   getters: {
     locale: function locale(state) {
       return state.locale;
@@ -49656,7 +49737,7 @@ var usersStore = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     loggedStatus: function loggedStatus(state) {
       return state.loggedStatus;
     },
-    user: function user(state) {
+    getUser: function getUser(state) {
       return state.user;
     }
   },
@@ -49666,25 +49747,9 @@ var usersStore = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     user: '',
     locale: 'en'
   },
-  plugins: [Object(vuex_persistedstate__WEBPACK_IMPORTED_MODULE_7__["default"])({
-    storage: {
-      getItem: function getItem(key) {
-        return js_cookie__WEBPACK_IMPORTED_MODULE_8___default.a.get(key);
-      },
-      setItem: function setItem(key, value) {
-        return js_cookie__WEBPACK_IMPORTED_MODULE_8___default.a.set(key, value, {
-          expires: 3,
-          secure: false
-        });
-      },
-      removeItem: function removeItem(key) {
-        return js_cookie__WEBPACK_IMPORTED_MODULE_8___default.a.remove(key);
-      }
-    }
-  })],
   mutations: {
     REGISTER_SUCCESS: function REGISTER_SUCCESS(state, msg) {
-      vue__WEBPACK_IMPORTED_MODULE_0___default.a.notify({
+      Vue.notify({
         group: 'foo',
         type: 'success',
         text: msg
@@ -49693,7 +49758,7 @@ var usersStore = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     REGISTER_FAIL: function REGISTER_FAIL(state, msg) {
       for (var el in msg) {
         console.log(msg[el]);
-        vue__WEBPACK_IMPORTED_MODULE_0___default.a.notify({
+        Vue.notify({
           group: 'foo',
           type: 'error',
           title: el,
@@ -49708,7 +49773,7 @@ var usersStore = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
       state.user = user;
     },
     LOGIN_SUCCESS: function LOGIN_SUCCESS(state, payload) {
-      vue__WEBPACK_IMPORTED_MODULE_0___default.a.notify({
+      Vue.notify({
         group: 'foo',
         type: 'success',
         text: 'Login successfully'
@@ -49724,7 +49789,7 @@ var usersStore = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
 
       for (var el in msg) {
         console.log(msg[el]);
-        vue__WEBPACK_IMPORTED_MODULE_0___default.a.notify({
+        Vue.notify({
           group: 'foo',
           type: 'error',
           title: el,
@@ -49734,7 +49799,7 @@ var usersStore = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
       }
 
       if (flag) {
-        vue__WEBPACK_IMPORTED_MODULE_0___default.a.notify({
+        Vue.notify({
           group: 'foo',
           type: 'error',
           text: 'Login fail'
@@ -49744,7 +49809,7 @@ var usersStore = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
       state.loggedStatus = false;
     },
     LOGOUT: function LOGOUT(state) {
-      vue__WEBPACK_IMPORTED_MODULE_0___default.a.notify({
+      Vue.notify({
         group: 'foo',
         type: 'success',
         text: 'Logout Success'
@@ -49754,26 +49819,26 @@ var usersStore = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     },
     SET_LANG: function SET_LANG(state, payload) {
       console.log(payload);
-      _app__WEBPACK_IMPORTED_MODULE_4__["default"].$i18n.locale = payload;
+      _app__WEBPACK_IMPORTED_MODULE_0__["default"].$i18n.locale = payload;
     }
   },
   actions: {
     fetch: function fetch(_ref) {
       var commit = _ref.commit;
-      return axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(_api__WEBPACK_IMPORTED_MODULE_3__["RESOURCE_USER"]).then(function (response) {
+      return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(_api__WEBPACK_IMPORTED_MODULE_2__["RESOURCE_USER"]).then(function (response) {
         return commit('FETCH', response.data);
       })["catch"]();
     },
     fetchOne: function fetchOne(_ref2, id) {
       var commit = _ref2.commit;
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("".concat(_api__WEBPACK_IMPORTED_MODULE_3__["RESOURCE_USER"], "/").concat(id, "/edit")).then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("".concat(_api__WEBPACK_IMPORTED_MODULE_2__["RESOURCE_USER"], "/").concat(id, "/edit")).then(function (response) {
         return commit('FETCH_ONE', response.data);
       })["catch"]();
     },
     addUser: function addUser(_ref3, user) {
       var commit = _ref3.commit;
       return new Promise(function (resolve, reject) {
-        axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("".concat(_api__WEBPACK_IMPORTED_MODULE_3__["RESOURCE_USER"]), {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("".concat(_api__WEBPACK_IMPORTED_MODULE_2__["RESOURCE_USER"]), {
           name: user.name,
           email: user.email,
           password: user.password,
@@ -49791,7 +49856,7 @@ var usersStore = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     login: function login(_ref4, user) {
       var commit = _ref4.commit;
       return new Promise(function (resolve, reject) {
-        axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("".concat(_api__WEBPACK_IMPORTED_MODULE_3__["RESOURCE_USER"], "/auth"), {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("".concat(_api__WEBPACK_IMPORTED_MODULE_2__["RESOURCE_USER"], "/auth"), {
           email: user.email,
           password: user.password
         }).then(function (response) {
@@ -49812,14 +49877,9 @@ var usersStore = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     setLang: function setLang(_ref6, payload) {
       var commit = _ref6.commit;
       commit('SET_LANG', payload);
-    },
-    increment: function increment(_ref7) {
-      var commit = _ref7.commit;
-      commit('increment');
     }
   }
 });
-/* harmony default export */ __webpack_exports__["default"] = (usersStore);
 
 /***/ }),
 

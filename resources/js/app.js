@@ -5,7 +5,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from '../components/App.vue'
 import routes from './routes'
-import usersStore from './store/usersStore'
+import index from './store'
 import VueI18n from 'vue-i18n'
 import Notifications from 'vue-notification'
 import i18n from './lang/i18n'
@@ -25,7 +25,7 @@ window.events = new Vue();
 
 router.beforeEach((to, from, next) => {
     const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-    const currentUser = usersStore.state.user;
+    const currentUser = index.state.user.user;
 
     if (requiresAuth && !currentUser) {
         next('/login');
@@ -41,7 +41,7 @@ const app = new Vue({
     render: h => h(App),
     i18n,
     router,
-    store: usersStore
+    store: index
 });
 
 export default app
