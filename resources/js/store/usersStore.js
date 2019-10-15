@@ -1,18 +1,18 @@
 import Vue from 'vue';
-import VueRouter from 'vue-router';
 import Vuex from 'vuex';
 import axios from 'axios';
 import {RESOURCE_USER} from '../api';
-import routes from '../routes';
 import app from '../app';
 import { resolve, reject } from 'q';
-
+import { getLocalUser } from '../helpers/auth';
+import createPersistedState from 'vuex-persistedstate';
+import Cookies from 'js-cookie'
 
 Vue.use(Vuex)
 
-const router = new VueRouter({
-    routes,
-});
+
+const currentUser = getLocalUser();
+const loggedStatus = getLocalUser(true);
 
 const usersStore = new Vuex.Store({
     getters: {
@@ -21,11 +21,18 @@ const usersStore = new Vuex.Store({
         user: state => state.user,
     },
     state: {
-        loggedStatus: '',
+        loggedStatus: false,
         users: [],
-        user: {},
+        user: '',
         locale: 'en'
     },
+    plugins: [createPersistedState({
+        storage: {
+            getItem: key => Cookies.get(key),
+            setItem: (key, value) => Cookies.set(key, value, { expires: 3, secure: false }),
+            removeItem: key => Cookies.remove(key)
+        }
+    })],
     mutations: {
         REGISTER_SUCCESS(state, msg) {
             Vue.notify({
@@ -51,17 +58,15 @@ const usersStore = new Vuex.Store({
         FETCH_ONE(state, user) {
             state.user = user;
         },
-        LOGIN_REQUEST(state) {
-            state.loggedStatus = 'loading'
-        },
-        LOGIN_SUCCESS(state, user) {
+        LOGIN_SUCCESS(state, payload) {
             Vue.notify({
                 group: 'foo',
                 type: 'success',
                 text: 'Login successfully'
             })
-            state.loggedStatus = 'success'
-            state.user = user
+            state.loggedStatus = true
+            state.user = Object.assign({}, payload.user, { token: payload.access_token });
+            console.log(payload)
         },
         LOGIN_ERROR(state, msg) {
             let flag = true;
@@ -83,7 +88,7 @@ const usersStore = new Vuex.Store({
                     text: 'Login fail'
                 })
             }
-            state.loggedStatus = 'error'
+            state.loggedStatus = false
         },
         LOGOUT(state) {
             Vue.notify({
@@ -91,8 +96,8 @@ const usersStore = new Vuex.Store({
                 type: 'success',
                 text: 'Logout Success'
             })
-            state.loggedStatus = ''
-            state.user = {}
+            state.loggedStatus = false
+            state.user = ''
         },
         SET_LANG(state, payload) {
             console.log(payload);
@@ -131,13 +136,12 @@ const usersStore = new Vuex.Store({
         },
         login({commit}, user) {
             return new Promise((resolve, reject) => {
-                commit('LOGIN_REQUEST')
                 axios.post(`${RESOURCE_USER}/auth`, {
                     email: user.email,
                     password: user.password,
                 })
                 .then(function (response){
-                    commit('LOGIN_SUCCESS', response.data.user)
+                    commit('LOGIN_SUCCESS', response.data)
                     console.log(response.data.user);
                     resolve(response)
                 })
@@ -153,6 +157,9 @@ const usersStore = new Vuex.Store({
         },
         setLang({ commit }, payload) {
             commit('SET_LANG', payload)
+        },
+        increment({ commit }) {
+            commit('increment')
         }
     }
 });

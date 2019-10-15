@@ -11,6 +11,9 @@ const routes = [
         path: '/checkout',
         component: StoreCheckout,
         name: 'store.checkout',
+        meta: {
+            requiresAuth: true,
+        }
     },
     {
         path: '/',
@@ -20,7 +23,10 @@ const routes = [
     {
         path: '/product',
         component: ProductPage,
-        name: 'store.productdetails'
+        name: 'store.productdetails',
+        meta: {
+            requiresAuth: true,
+        }
     },
     {
         path: '/cart',

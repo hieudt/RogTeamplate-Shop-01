@@ -18,14 +18,14 @@
 					</div>
 					<div class="col-xl-4 col-lg-5">
 						<div class="user-panel">
-							<div class="up-item" v-if="!isLogged">
+							<div class="up-item" v-if="!loggedStatus">
 								<i class="flaticon-profile"></i>
 								<router-link :to="{name: 'store.login'}">{{ $t("login.title") }}</router-link> {{ $t("common.or") }} <router-link :to="{name: 'store.register'}">{{ $t("register.title") }}</router-link>
 							</div>
-							<div v-if="isLogged">
+							<div v-if="loggedStatus">
 								<div class="up-item">
 									<i class="flaticon-profile"></i>
-									<span>{{ authName }}</span>
+									<span>{{ user.name }}</span>
 								</div>
 								<div class="up-item">
 									<i class="flaticon-logout"></i>
@@ -87,6 +87,9 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import { mapState } from 'vuex'
+
 export default {
 	data() {
         return {
@@ -105,18 +108,17 @@ export default {
 	created() {
 	},
     computed: {
-		isLogged() {
-			if (this.$store.state.loggedStatus == 'success') {
-				return true;
-			} else {
-				return false;
-			}
-		},
-		authName() {
-			return this.$store.state.user.name;
-		}
+		...mapState([
+			'loggedStatus'
+		]),
+		...mapGetters([
+			'user'
+		])
 	},
 	methods: {
+		increment() {
+			this.$store.dispatch('increment')
+		},
 		logout() {
 			this.$store.dispatch('logout')
 			this.$router.push('/')
