@@ -2914,8 +2914,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     token: 'user/getToken',
     users: 'user/getUsers'
   })),
-  methods: {},
-  created: function created() {}
+  methods: {
+    _delete: function _delete(userId) {
+      var _this = this;
+
+      this.$store.dispatch('user/delete', {
+        token: this.token,
+        id: userId
+      }).then(function () {
+        return _this.$store.dispatch('user/fetch', _this.token);
+      });
+    }
+  },
+  created: function created() {
+    console.log(this.$store.getters.user.token);
+  }
 });
 
 /***/ }),
@@ -2936,7 +2949,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
 //
 //
 //
@@ -3348,7 +3360,7 @@ exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader
 
 
 // module
-exports.push([module.i, "\n.router-anim-enter-active {\n  -webkit-animation: coming .5s;\n          animation: coming .5s;\n  -webkit-animation-delay: .5s;\n          animation-delay: .5s;\n  opacity: 0;\n}\n.router-anim-leave-active {\n  -webkit-animation: going .5s;\n          animation: going .5s;\n}\n@-webkit-keyframes going {\nfrom {\n    transform: translateX(0);\n}\nto {\n    transform: translateX(-50px);\n    opacity: 0;\n}\n}\n@keyframes going {\nfrom {\n    transform: translateX(0);\n}\nto {\n    transform: translateX(-50px);\n    opacity: 0;\n}\n}\n@-webkit-keyframes coming {\nfrom {\n    transform: translateX(-50px);\n    opacity: 0;\n}\nto {\n    transform: translateX(0);\n    opacity: 1;\n}\n}\n@keyframes coming {\nfrom {\n    transform: translateX(-50px);\n    opacity: 0;\n}\nto {\n    transform: translateX(0);\n    opacity: 1;\n}\n}\n", ""]);
+exports.push([module.i, "\n.router-anim-enter-active {\n  -webkit-animation: coming .3s;\n          animation: coming .3s;\n  -webkit-animation-delay: .3s;\n          animation-delay: .3s;\n  opacity: 0;\n}\n.router-anim-leave-active {\n  -webkit-animation: going .3s;\n          animation: going .3s;\n}\n@-webkit-keyframes going {\nfrom {\n    transform: translateX(0);\n}\nto {\n    transform: translateX(-50px);\n    opacity: 0;\n}\n}\n@keyframes going {\nfrom {\n    transform: translateX(0);\n}\nto {\n    transform: translateX(-50px);\n    opacity: 0;\n}\n}\n@-webkit-keyframes coming {\nfrom {\n    transform: translateX(-50px);\n    opacity: 0;\n}\nto {\n    transform: translateX(0);\n    opacity: 1;\n}\n}\n@keyframes coming {\nfrom {\n    transform: translateX(-50px);\n    opacity: 0;\n}\nto {\n    transform: translateX(0);\n    opacity: 1;\n}\n}\n", ""]);
 
 // exports
 
@@ -30085,7 +30097,15 @@ var render = function() {
                   _c("td", [
                     _c(
                       "a",
-                      { staticClass: "btn btn-danger", attrs: { href: "#" } },
+                      {
+                        staticClass: "btn btn-danger",
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            return _vm._delete(user.id)
+                          }
+                        }
+                      },
                       [_vm._v(_vm._s(_vm.$t("common.delete")))]
                     )
                   ])
@@ -49883,7 +49903,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RESOURCE_USER", function() { return RESOURCE_USER; });
-var RESOURCE_USER = 'api/users';
+var RESOURCE_USER = '/api/users';
 
 
 /***/ }),
@@ -49926,7 +49946,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_lazyload__WEBPACK_IMPORTED_MO
   loading: 'https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif'
 });
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
-  routes: _routes__WEBPACK_IMPORTED_MODULE_3__["default"]
+  routes: _routes__WEBPACK_IMPORTED_MODULE_3__["default"],
+  mode: 'history'
 });
 window.events = new vue__WEBPACK_IMPORTED_MODULE_0___default.a();
 router.beforeEach(function (to, from, next) {
@@ -50254,10 +50275,10 @@ webpackContext.id = "./resources/js/store/modules sync recursive \\.js$";
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../app */ "./resources/js/app.js");
+/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/app */ "./resources/js/app.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../api */ "./resources/js/api.js");
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/api */ "./resources/js/api.js");
 /* harmony import */ var q__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! q */ "./node_modules/q/q.js");
 /* harmony import */ var q__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(q__WEBPACK_IMPORTED_MODULE_3__);
 
@@ -50373,8 +50394,33 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   actions: {
-    fetch: function fetch(_ref, token) {
+    "delete": function _delete(_ref, data) {
       var commit = _ref.commit;
+      return new Promise(function (resolve, reject) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.create({
+          headers: {
+            'Accept': 'application/json',
+            'Content-type': 'application/json',
+            'Authorization': 'Bearer ' + data.token
+          }
+        })["delete"]("".concat(_api__WEBPACK_IMPORTED_MODULE_2__["RESOURCE_USER"], "/").concat(data.id)).then(function (response) {
+          Vue.notify({
+            group: 'foo',
+            type: 'success',
+            text: 'Delete Successfully'
+          });
+          resolve(response);
+        })["catch"](function (error) {
+          Vue.notify({
+            group: 'foo',
+            type: 'error',
+            text: 'Error'
+          });
+        });
+      });
+    },
+    fetch: function fetch(_ref2, token) {
+      var commit = _ref2.commit;
       return new Promise(function (resolve, reject) {
         axios__WEBPACK_IMPORTED_MODULE_1___default.a.create({
           headers: {
@@ -50388,8 +50434,8 @@ __webpack_require__.r(__webpack_exports__);
         })["catch"]();
       });
     },
-    fetchOne: function fetchOne(_ref2, data) {
-      var commit = _ref2.commit;
+    fetchOne: function fetchOne(_ref3, data) {
+      var commit = _ref3.commit;
       return new Promise(function (resolve, reject) {
         axios__WEBPACK_IMPORTED_MODULE_1___default.a.create({
           headers: {
@@ -50403,8 +50449,8 @@ __webpack_require__.r(__webpack_exports__);
         })["catch"]();
       });
     },
-    addUser: function addUser(_ref3, user) {
-      var commit = _ref3.commit;
+    addUser: function addUser(_ref4, user) {
+      var commit = _ref4.commit;
       return new Promise(function (resolve, reject) {
         axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("".concat(_api__WEBPACK_IMPORTED_MODULE_2__["RESOURCE_USER"]), {
           name: user.name,
@@ -50421,8 +50467,8 @@ __webpack_require__.r(__webpack_exports__);
         });
       });
     },
-    login: function login(_ref4, user) {
-      var commit = _ref4.commit;
+    login: function login(_ref5, user) {
+      var commit = _ref5.commit;
       return new Promise(function (resolve, reject) {
         axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("".concat(_api__WEBPACK_IMPORTED_MODULE_2__["RESOURCE_USER"], "/auth"), {
           email: user.email,
@@ -50438,12 +50484,12 @@ __webpack_require__.r(__webpack_exports__);
         });
       });
     },
-    logout: function logout(_ref5) {
-      var commit = _ref5.commit;
+    logout: function logout(_ref6) {
+      var commit = _ref6.commit;
       commit('LOGOUT');
     },
-    setLang: function setLang(_ref6, payload) {
-      var commit = _ref6.commit;
+    setLang: function setLang(_ref7, payload) {
+      var commit = _ref7.commit;
       commit('SET_LANG', payload);
     }
   }
