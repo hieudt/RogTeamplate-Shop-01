@@ -56,7 +56,7 @@ export default {
     },
     methods: {
         add: function () {
-            this.$store.dispatch('addUser', {
+            this.$store.dispatch('user/addUser', {
                 name: this.name,
                 email: this.email,
                 password: this.password,

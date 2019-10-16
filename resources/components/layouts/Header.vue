@@ -49,7 +49,7 @@
 				<!-- menu -->
 				<ul class="main-menu">
 					<li><router-link :to="{name: 'store.index'}">{{ $t('common.home_page') }}</router-link></li>
-					<li><a href="#">Women</a></li>
+					<li><router-link :to="{name: 'user.list'}">{{ $t('common.users_list') }}</router-link></li>
 					<li><a href="#">Men</a></li>
 					<li><a href="#">Jewelry
 						<span class="new">New</span>

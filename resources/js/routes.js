@@ -5,6 +5,7 @@ import CartPage from '../components/CartPage.vue'
 import CategoryPage from '../components/CategoryPage.vue'
 import Register from '../components/Register.vue'
 import Login from '../components/Login.vue'
+import UserList from '../components/Users/List.vue'
 
 const routes = [
     {
@@ -47,6 +48,22 @@ const routes = [
         path: '/login',
         component: Login,
         name: 'store.login',
+    },
+    {
+        path:'/user',
+        name: 'user',
+        component: { render : h => h('router-view') },
+        meta: {
+            requiresAuth: true,
+        },
+        children: [
+            {
+                path: 'list',
+                name: 'user.list',
+                component: UserList,
+                
+            }
+        ]
     }
 ];
 export default routes;

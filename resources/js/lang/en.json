@@ -2,6 +2,7 @@
     "common": {
         "select_lang": "Language",
         "home_page" : "Home page",
+        "users_list" : "Users List",
         "or" : "or"
     },
     "search" : {

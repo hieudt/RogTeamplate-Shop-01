@@ -9,14 +9,22 @@ export default {
         locale: state => state.locale,
         loggedStatus: state => state.loggedStatus,
         getUser: state => state.user,
+        getToken: state =>state.token,
+        getUsers: state => state.users,
+        isLoading: state => state.isLoading,
     },
     state: {
         loggedStatus: false,
         users: [],
         user: '',
-        locale: 'en'
+        locale: 'en',
+        token: '',
+        isLoading: false,
     },
     mutations: {
+        LOADING(state) {
+            state.isLoading = !state.isLoading
+        },
         REGISTER_SUCCESS(state, msg) {
             Vue.notify({
                 group: 'foo',
@@ -48,7 +56,9 @@ export default {
                 text: 'Login successfully'
             })
             state.loggedStatus = true
-            state.user = Object.assign({}, payload.user, { token: payload.access_token });
+            state.user = Object.assign({}, payload.user, { token: payload.access_token })
+            state.token = payload.access_token
+            console.log('STATE.TOKEN' + state.token)
             console.log(payload)
         },
         LOGIN_ERROR(state, msg) {
@@ -81,6 +91,7 @@ export default {
             })
             state.loggedStatus = false
             state.user = ''
+            state.token = ''
         },
         SET_LANG(state, payload) {
             console.log(payload);
@@ -88,10 +99,23 @@ export default {
         }
     },
     actions: {
-        fetch({ commit }) {
-            return axios.get(RESOURCE_USER)
-                .then(response => commit('FETCH', response.data))
+        fetch({ commit }, token) {
+            return new Promise ((resolve, reject) => {
+                axios.create({
+                    headers: {
+                        'Accept' : 'application/json',
+                        'Content-type': 'application/json',
+                        'Authorization': 'Bearer '+token,
+                    }
+                })
+                .get(RESOURCE_USER)
+                .then(function (response) {
+                    commit('FETCH', response.data)
+                    resolve(response)
+                    commit('LOADING')
+                })
                 .catch();
+            })
         },
         fetchOne({ commit }, id) {
             axios.get(`${RESOURCE_USER}/${id}/edit`)
@@ -141,6 +165,9 @@ export default {
         setLang({ commit }, payload) {
             commit('SET_LANG', payload)
         },
+        isLoading({ commit }) {
+            commit('LOADING')
+        }
     },
 }
 

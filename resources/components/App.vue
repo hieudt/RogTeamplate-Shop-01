@@ -4,6 +4,7 @@
         <!-- <div id="preloder">
             <div class="loader"></div>
         </div> -->
+        <Loading></Loading>
         <front-header></front-header>
         <transition name="router-anim">
             <router-view></router-view>
@@ -40,16 +41,21 @@
   }
 </style>
 <script>
-    import FrontHeader from '../components/layouts/Header.vue'
-    import HomePage from '../components/HomePage.vue'
-    import FrontFooter from '../components/layouts/Footer.vue'
-
+    import FrontHeader from '@comp/layouts/Header.vue'
+    import HomePage from '@comp/HomePage.vue'
+    import FrontFooter from '@comp/layouts/Footer.vue'
+    import Loading from '@comp/layouts/Loading.vue';
+    
     export default {
         components: {
             FrontHeader,
-            FrontFooter
+            FrontFooter,
+            Loading,
         },
         methods: {
+        },
+        created() {
+          console.log(this.isLoading)
         }
     }
 </script>

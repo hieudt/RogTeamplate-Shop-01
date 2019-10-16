@@ -11,9 +11,11 @@
 |
 */
 
-Route::group(['prefix' => 'api'], function () {
-    Route::resource('users', 'AuthController');
-    Route::post('users/auth', 'AuthController@login');    
+Route::post('api/users/auth', 'AuthController@login');
+Route::post('api/users', 'AuthController@store');
+
+Route::group(['middleware' => ['api.check', 'auth:api'],'prefix' => 'api'], function () {
+    Route::resource('users', 'AuthController')->except(['store']);  
 });
 
 Route::view('/{any}', 'app')

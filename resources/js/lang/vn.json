@@ -2,6 +2,7 @@
     "common": {
         "select_lang": "Ngôn ngữ",
         "home_page" : "Trang chủ",
+        "users_list" : "Người dùng",
         "or" : "hoặc"
     },
     "search" : {
