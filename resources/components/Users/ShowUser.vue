@@ -12,7 +12,6 @@
 	</div>
 	<!-- Page info end -->
 
-
 	<!-- Category section -->
 	<section class="category-section spad">
 		<div class="container">

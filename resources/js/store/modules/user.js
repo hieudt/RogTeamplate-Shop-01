@@ -1,6 +1,6 @@
-import app from '../../app';
+import app from '@/app';
 import axios from 'axios';
-import {RESOURCE_USER} from '../../api';
+import {RESOURCE_USER , HEADER} from '@/api';
 import { resolve, reject } from 'q';
 
 export default {
@@ -96,13 +96,40 @@ export default {
         }
     },
     actions: {
+        delete({ commit }, data) {
+            return new Promise ((resolve, reject) => {
+                axios.create({
+                    headers: {
+                        'Accept' : 'application/json',
+                        'Content-type' : 'application/json',
+                        'Authorization' : 'Bearer '+data.token,
+                    }
+                })
+                .delete(`${RESOURCE_USER}/${data.id}`)
+                .then(function (response) {
+                    Vue.notify({
+                        group: 'foo',
+                        type: 'success',
+                        text: 'Delete Successfully'
+                    })
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    Vue.notify({
+                        group: 'foo',
+                        type: 'error',
+                        text: 'Error'
+                    })
+                })
+            })
+        },
         fetch({ commit }, token) {
             return new Promise ((resolve, reject) => {
                 axios.create({
                     headers: {
                         'Accept' : 'application/json',
-                        'Content-type': 'application/json',
-                        'Authorization': 'Bearer '+token,
+                        'Content-type' : 'application/json',
+                        'Authorization' : 'Bearer '+token,
                     }
                 })
                 .get(RESOURCE_USER)

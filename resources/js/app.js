@@ -20,6 +20,7 @@ Vue.use(VueLazyload, {
 
 const router = new VueRouter({
     routes,
+    mode: 'history'
 });
 window.events = new Vue();
 

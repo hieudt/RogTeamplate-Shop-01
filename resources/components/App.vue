@@ -57,12 +57,12 @@
 </script>
 <style>
 .router-anim-enter-active {
-  animation: coming .5s;
-  animation-delay: .5s;
+  animation: coming .3s;
+  animation-delay: .3s;
   opacity: 0;
 }
 .router-anim-leave-active {
-  animation: going .5s;
+  animation: going .3s;
 }
 
 @keyframes going {
