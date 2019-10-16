@@ -18,22 +18,21 @@
 		<div class="container">
 			<div class="row">
 				<table class="table">
-                    <thead>
+                    <tbody>
                         <tr>
                             <td>ID</td>
-                            <td>Name</td>
-                            <td>Email</td>
-                            <td colspan="3">Action</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="user in users">
                             <td>{{ user.id }}</td>
+                        </tr>
+                        <tr>
+                            <td>Name</td>
                             <td>{{ user.name }}</td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
                             <td>{{ user.email }}</td>
-                            <td><router-link :to="{ name: 'user.show', params: { id: user.id }}" class='btn btn-success'>{{ $t('common.show') }}</router-link></td>
-                            <td><a href="#" class="btn btn-primary">{{ $t('common.edit') }}</a></td>
-                            <td><a href="#" class="btn btn-danger">{{ $t('common.delete') }}</a></td>
+                        </tr>
+                        <tr>
+                            <td><router-link :to="{name: 'user.list'}" class="btn btn-dark">{{ $t('common.back') }}</router-link></td>
                         </tr>
                     </tbody>
                 </table>
@@ -44,22 +43,23 @@
     </div>
 </template>
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex'
 
 export default {
     mounted() {
-        this.$store.dispatch('user/fetch', this.token)
+        this.$store.dispatch('user/fetchOne', {
+            token: this.token,
+            id: this.$route.params.id
+        })
+        console.log(this.token)
     },
     computed : {
         ...mapGetters({
             token : 'user/getToken',
-            users : 'user/getUsers',
+            user : 'user/getUserShow',
 		})
     },
-    methods: {
-    },
 	created () {
-        
 	}
 }
 </script>

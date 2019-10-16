@@ -1,11 +1,12 @@
-import StoreCheckout from '../components/StoreCheckout.vue'
-import HomePage from '../components/HomePage.vue'
-import ProductPage from '../components/ProductPage.vue'
-import CartPage from '../components/CartPage.vue'
-import CategoryPage from '../components/CategoryPage.vue'
-import Register from '../components/Register.vue'
-import Login from '../components/Login.vue'
-import UserList from '../components/Users/List.vue'
+import StoreCheckout from '@comp/StoreCheckout.vue'
+import HomePage from '@comp/HomePage.vue'
+import ProductPage from '@comp/ProductPage.vue'
+import CartPage from '@comp/CartPage.vue'
+import CategoryPage from '@comp/CategoryPage.vue'
+import Register from '@comp/Register.vue'
+import Login from '@comp/Login.vue'
+import UserList from '@comp/Users/List.vue'
+import ShowUser from '@comp/Users/ShowUser.vue'
 
 const routes = [
     {
@@ -61,7 +62,11 @@ const routes = [
                 path: 'list',
                 name: 'user.list',
                 component: UserList,
-                
+            },
+            {
+                path: 'show/:id',
+                name: 'user.show',
+                component: ShowUser,
             }
         ]
     }

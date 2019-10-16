@@ -3,7 +3,11 @@
         "select_lang": "Language",
         "home_page" : "Home page",
         "users_list" : "Users List",
-        "or" : "or"
+        "or" : "or",
+        "back" : "back",
+        "show" : "Show",
+        "edit" : "Edit",
+        "delete" : "Delete"
     },
     "search" : {
         "placeholder" : "Search on here ..."

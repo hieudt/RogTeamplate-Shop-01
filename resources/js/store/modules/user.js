@@ -11,20 +11,17 @@ export default {
         getUser: state => state.user,
         getToken: state =>state.token,
         getUsers: state => state.users,
-        isLoading: state => state.isLoading,
+        getUserShow: state => state.userShow,
     },
     state: {
         loggedStatus: false,
         users: [],
+        userShow: '',
         user: '',
         locale: 'en',
         token: '',
-        isLoading: false,
     },
     mutations: {
-        LOADING(state) {
-            state.isLoading = !state.isLoading
-        },
         REGISTER_SUCCESS(state, msg) {
             Vue.notify({
                 group: 'foo',
@@ -47,7 +44,8 @@ export default {
             state.users = users;
         },
         FETCH_ONE(state, user) {
-            state.user = user;
+            state.userShow = user
+            console.log(state)
         },
         LOGIN_SUCCESS(state, payload) {
             Vue.notify({
@@ -58,7 +56,6 @@ export default {
             state.loggedStatus = true
             state.user = Object.assign({}, payload.user, { token: payload.access_token })
             state.token = payload.access_token
-            console.log('STATE.TOKEN' + state.token)
             console.log(payload)
         },
         LOGIN_ERROR(state, msg) {
@@ -112,15 +109,26 @@ export default {
                 .then(function (response) {
                     commit('FETCH', response.data)
                     resolve(response)
-                    commit('LOADING')
                 })
                 .catch();
             })
         },
-        fetchOne({ commit }, id) {
-            axios.get(`${RESOURCE_USER}/${id}/edit`)
-                .then(response => commit('FETCH_ONE', response.data))
+        fetchOne({ commit }, data) {
+            return new Promise ((resolve, reject) => {
+                axios.create({
+                    headers: {
+                        'Accept' : 'application/json',
+                        'Content-type': 'application/json',
+                        'Authorization': 'Bearer '+data.token,
+                    }
+                })
+                .get(`${RESOURCE_USER}/${data.id}`)
+                .then(function (response) {
+                    commit('FETCH_ONE', response.data[0])
+                    resolve(response)
+                })
                 .catch();
+            })
         },
         addUser({ commit }, user) {
             return new Promise((resolve, reject) => {
@@ -165,9 +173,6 @@ export default {
         setLang({ commit }, payload) {
             commit('SET_LANG', payload)
         },
-        isLoading({ commit }) {
-            commit('LOADING')
-        }
     },
 }
 

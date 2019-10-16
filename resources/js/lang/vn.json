@@ -3,7 +3,11 @@
         "select_lang": "Ngôn ngữ",
         "home_page" : "Trang chủ",
         "users_list" : "Người dùng",
-        "or" : "hoặc"
+        "or" : "hoặc",
+        "back" : "Quay Lại",
+        "show" : "Hiển thị",
+        "edit" : "Sửa",
+        "delete" : "Xóa"
     },
     "search" : {
         "placeholder" : "Nhập tìm kiếm tại đây ..."

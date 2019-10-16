@@ -47,7 +47,9 @@ class AuthController extends Controller
      */
     public function show(User $user)
     {
-        //
+        $users = User::find($user);
+
+        return response()->json($users);
     }
 
     /**

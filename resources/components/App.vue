@@ -1,10 +1,9 @@
 <template>
     <div>
         <!-- Page Preloder -->
-        <!-- <div id="preloder">
+        <div id="preloder">
             <div class="loader"></div>
-        </div> -->
-        <Loading></Loading>
+        </div>
         <front-header></front-header>
         <transition name="router-anim">
             <router-view></router-view>
@@ -44,18 +43,15 @@
     import FrontHeader from '@comp/layouts/Header.vue'
     import HomePage from '@comp/HomePage.vue'
     import FrontFooter from '@comp/layouts/Footer.vue'
-    import Loading from '@comp/layouts/Loading.vue';
     
     export default {
         components: {
             FrontHeader,
             FrontFooter,
-            Loading,
         },
         methods: {
         },
         created() {
-          console.log(this.isLoading)
         }
     }
 </script>
