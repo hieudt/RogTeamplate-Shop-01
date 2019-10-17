@@ -4,10 +4,12 @@
         "home_page" : "Home page",
         "users_list" : "Users List",
         "or" : "or",
-        "back" : "back",
+        "back" : "Back",
         "show" : "Show",
         "edit" : "Edit",
-        "delete" : "Delete"
+        "delete" : "Delete",
+        "save" : "Save",
+        "changepw" : "Change Password"
     },
     "search" : {
         "placeholder" : "Search on here ..."
@@ -47,6 +49,14 @@
             "payment" : "FAST SECURE PAYMENTS",
             "premium" : "PREMIUM PRODUCTS",
             "delivery" : "FREE & FAST DELIVERY"
+        }
+    },
+    "user" : {
+        "password" : {
+            "oldpass" : "Old Password",
+            "newpass" : "New Password",
+            "alert" : "Do Not Share Your Password",
+            "alertlabel" : "Warning!"
         }
     }
 }

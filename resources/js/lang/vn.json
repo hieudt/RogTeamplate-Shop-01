@@ -7,7 +7,9 @@
         "back" : "Quay Lại",
         "show" : "Hiển thị",
         "edit" : "Sửa",
-        "delete" : "Xóa"
+        "delete" : "Xóa",
+        "save" : "Lưu",
+        "changepw" : "Đổi mật khẩu"
     },
     "search" : {
         "placeholder" : "Nhập tìm kiếm tại đây ..."
@@ -47,6 +49,14 @@
             "payment" : "THANH TOÁN NHANH CHÓNG",
             "premium" : "SẢN PHẨM CAO CẤP",
             "delivery" : "MIỄN PHÍ GIAO HÀNG"
+        }
+    },
+    "user" : {
+        "password" : {
+            "oldpass" : "Mật khẩu cũ",
+            "newpass" : "Mật khẩu mới",
+            "alert" : "Vui lòng không chia sẻ mật khẩu của bạn",
+            "alertlabel" : "Cảnh báo!"
         }
     }
 }

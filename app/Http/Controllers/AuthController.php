@@ -6,8 +6,10 @@ use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Http\Requests\UserLoginRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -65,6 +67,19 @@ class AuthController extends Controller
         if (! $user) {
             return response()
             ->json(['error' => 'Error: User not found']);
+        }
+
+        if (isset($request->changepw) && $request->changepw == true) {
+            $request->validate([
+                'newpass' => 'required',
+                'oldpass' => 'required',
+            ]);
+
+            if (Hash::check($request->oldpass, $user->password)) {
+                $user->password = bcrypt($request->newpass);
+            } else {
+                return response()->json(['error' => 'Error Update'], 500);
+            }
         }
         $user->update($request->all());
         return response()
