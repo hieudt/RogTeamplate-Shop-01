@@ -2906,11 +2906,31 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      userEdit: {}
+      userEdit: {},
+      changepw: false
     };
   },
   mounted: function mounted() {
@@ -2926,6 +2946,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   created: function created() {},
   methods: {
     save: function save() {
+      if (this.changepw) this.user.changepw = true;else this.user.changepw = false;
       this.userEdit = this.user;
       this.$store.dispatch('user/update', this.userEdit);
     }
@@ -3487,6 +3508,25 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 // module
 exports.push([module.i, "\n.rog-input[data-v-76ece26d] {\n    width: 100%;\n    height: 44px;\n    border: none;\n    padding: 0 18px;\n    background: #f0f0f0;\n    border-radius: 40px;\n    font-size: 14px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/components/Users/EditUser.vue?vue&type=style&index=1&lang=css&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/components/Users/EditUser.vue?vue&type=style&index=1&lang=css& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.router-anim-enter-active {\n  -webkit-animation: coming .3s;\n          animation: coming .3s;\n  -webkit-animation-delay: .3s;\n          animation-delay: .3s;\n  opacity: 0;\n}\n.router-anim-leave-active {\n  -webkit-animation: going .3s;\n          animation: going .3s;\n}\n@-webkit-keyframes going {\nfrom {\n    transform: translateX(0);\n}\nto {\n    transform: translateX(-50px);\n    opacity: 0;\n}\n}\n@keyframes going {\nfrom {\n    transform: translateX(0);\n}\nto {\n    transform: translateX(-50px);\n    opacity: 0;\n}\n}\n@-webkit-keyframes coming {\nfrom {\n    transform: translateX(-50px);\n    opacity: 0;\n}\nto {\n    transform: translateX(0);\n    opacity: 1;\n}\n}\n@keyframes coming {\nfrom {\n    transform: translateX(-50px);\n    opacity: 0;\n}\nto {\n    transform: translateX(0);\n    opacity: 1;\n}\n}\n", ""]);
 
 // exports
 
@@ -24148,6 +24188,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/components/Users/EditUser.vue?vue&type=style&index=1&lang=css&":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/components/Users/EditUser.vue?vue&type=style&index=1&lang=css& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./EditUser.vue?vue&type=style&index=1&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/components/Users/EditUser.vue?vue&type=style&index=1&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/lib/addStyles.js":
 /*!****************************************************!*\
   !*** ./node_modules/style-loader/lib/addStyles.js ***!
@@ -30815,70 +30885,218 @@ var render = function() {
         },
         [
           _c("div", { staticClass: "container" }, [
-            _c("div", { staticClass: "row" }, [
-              _c("table", { staticClass: "table" }, [
-                _c("tbody", [
-                  _c("tr", [
-                    _c("td", [_vm._v("ID")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(_vm.user.id))])
-                  ]),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [_vm._v("Name")]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.user.name,
-                            expression: "user.name"
-                          }
-                        ],
-                        staticClass: "rog-input",
-                        attrs: { type: "text" },
-                        domProps: { value: _vm.user.name },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(_vm.user, "name", $event.target.value)
-                          }
+            _c(
+              "div",
+              { staticClass: "row" },
+              [
+                _c("transition", { attrs: { name: "router-anim" } }, [
+                  _c(
+                    "div",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.changepw,
+                          expression: "changepw"
                         }
-                      })
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [_vm._v("Email")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(_vm.user.email))])
-                  ]),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c(
-                      "td",
-                      [
-                        _c(
-                          "router-link",
-                          {
-                            staticClass: "btn btn-dark",
-                            attrs: { to: { name: "user.list" } }
-                          },
-                          [_vm._v(_vm._s(_vm.$t("common.back")))]
-                        )
                       ],
-                      1
-                    ),
+                      staticClass: "alert alert-warning"
+                    },
+                    [
+                      _c("strong", [
+                        _vm._v(_vm._s(_vm.$t("user.password.alertlabel")) + "!")
+                      ]),
+                      _vm._v(
+                        " " +
+                          _vm._s(_vm.$t("user.password.alert")) +
+                          "\n                        "
+                      )
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("table", { staticClass: "table" }, [
+                  _c("tbody", [
+                    _c("tr", [
+                      _c("td", [_vm._v("ID")]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(_vm.user.id))])
+                    ]),
                     _vm._v(" "),
-                    _vm._m(1)
+                    _c("tr", [
+                      _c("td", [_vm._v("Name")]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.user.name,
+                              expression: "user.name"
+                            }
+                          ],
+                          staticClass: "rog-input",
+                          attrs: { type: "text" },
+                          domProps: { value: _vm.user.name },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(_vm.user, "name", $event.target.value)
+                            }
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("tr", [
+                      _c("td", [_vm._v("Email")]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(_vm.user.email))])
+                    ]),
+                    _vm._v(" "),
+                    _vm.changepw
+                      ? _c("tr", [
+                          _c("td", [
+                            _vm._v(_vm._s(_vm.$t("user.password.oldpass")))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.user.oldpass,
+                                  expression: "user.oldpass"
+                                }
+                              ],
+                              staticClass: "rog-input",
+                              attrs: { type: "text" },
+                              domProps: { value: _vm.user.oldpass },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.user,
+                                    "oldpass",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.changepw
+                      ? _c("tr", [
+                          _c("td", [
+                            _vm._v(_vm._s(_vm.$t("user.password.newpass")))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.user.newpass,
+                                  expression: "user.newpass"
+                                }
+                              ],
+                              staticClass: "rog-input",
+                              attrs: { type: "text" },
+                              domProps: { value: _vm.user.newpass },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.user,
+                                    "newpass",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.user.changepw,
+                                  expression: "user.changepw"
+                                }
+                              ],
+                              staticClass: "rog-input",
+                              attrs: { type: "hidden" },
+                              domProps: { value: _vm.user.changepw },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.user,
+                                    "changepw",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c("tr", [
+                      _c(
+                        "td",
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              staticClass: "btn btn-dark",
+                              attrs: { to: { name: "user.list" } }
+                            },
+                            [_vm._v(_vm._s(_vm.$t("common.back")))]
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c("button", { staticClass: "btn btn-success" }, [
+                          _vm._v(_vm._s(_vm.$t("common.save")))
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-danger",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                _vm.changepw = !_vm.changepw
+                              }
+                            }
+                          },
+                          [_vm._v(_vm._s(_vm.$t("common.changepw")))]
+                        )
+                      ])
+                    ])
                   ])
                 ])
-              ])
-            ])
+              ],
+              1
+            )
           ])
         ]
       )
@@ -30901,14 +31119,6 @@ var staticRenderFns = [
           _vm._v(" /\n\t\t\t")
         ])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("button", { staticClass: "btn btn-success" }, [_vm._v("Save")])
     ])
   }
 ]
@@ -30969,13 +31179,22 @@ var render = function() {
                     1
                   ),
                   _vm._v(" "),
-                  _c("td", [
-                    _c(
-                      "a",
-                      { staticClass: "btn btn-primary", attrs: { href: "#" } },
-                      [_vm._v(_vm._s(_vm.$t("common.edit")))]
-                    )
-                  ]),
+                  _c(
+                    "td",
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: {
+                            to: { name: "user.edit", params: { id: user.id } }
+                          }
+                        },
+                        [_vm._v(_vm._s(_vm.$t("common.edit")))]
+                      )
+                    ],
+                    1
+                  ),
                   _vm._v(" "),
                   _c("td", [
                     _c(
@@ -51259,7 +51478,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EditUser_vue_vue_type_template_id_76ece26d_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EditUser.vue?vue&type=template&id=76ece26d&scoped=true& */ "./resources/components/Users/EditUser.vue?vue&type=template&id=76ece26d&scoped=true&");
 /* harmony import */ var _EditUser_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EditUser.vue?vue&type=script&lang=js& */ "./resources/components/Users/EditUser.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _EditUser_vue_vue_type_style_index_0_id_76ece26d_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./EditUser.vue?vue&type=style&index=0&id=76ece26d&scoped=true&lang=css& */ "./resources/components/Users/EditUser.vue?vue&type=style&index=0&id=76ece26d&scoped=true&lang=css&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _EditUser_vue_vue_type_style_index_1_lang_css___WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./EditUser.vue?vue&type=style&index=1&lang=css& */ "./resources/components/Users/EditUser.vue?vue&type=style&index=1&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
 
 
 
@@ -51268,7 +51489,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_4__["default"])(
   _EditUser_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _EditUser_vue_vue_type_template_id_76ece26d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
   _EditUser_vue_vue_type_template_id_76ece26d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -51313,6 +51534,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_EditUser_vue_vue_type_style_index_0_id_76ece26d_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_EditUser_vue_vue_type_style_index_0_id_76ece26d_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_EditUser_vue_vue_type_style_index_0_id_76ece26d_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_EditUser_vue_vue_type_style_index_0_id_76ece26d_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
  /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_EditUser_vue_vue_type_style_index_0_id_76ece26d_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./resources/components/Users/EditUser.vue?vue&type=style&index=1&lang=css&":
+/*!**********************************************************************************!*\
+  !*** ./resources/components/Users/EditUser.vue?vue&type=style&index=1&lang=css& ***!
+  \**********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_EditUser_vue_vue_type_style_index_1_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader!../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./EditUser.vue?vue&type=style&index=1&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/components/Users/EditUser.vue?vue&type=style&index=1&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_EditUser_vue_vue_type_style_index_1_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_EditUser_vue_vue_type_style_index_1_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_EditUser_vue_vue_type_style_index_1_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_EditUser_vue_vue_type_style_index_1_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_EditUser_vue_vue_type_style_index_1_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -52044,10 +52281,10 @@ http.interceptors.request.use(function (config) {
 /*!***********************************!*\
   !*** ./resources/js/lang/en.json ***!
   \***********************************/
-/*! exports provided: common, search, cart, login, register, logout, homepage, default */
+/*! exports provided: common, search, cart, login, register, logout, homepage, user, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"common\":{\"select_lang\":\"Language\",\"home_page\":\"Home page\",\"users_list\":\"Users List\",\"or\":\"or\",\"back\":\"back\",\"show\":\"Show\",\"edit\":\"Edit\",\"delete\":\"Delete\"},\"search\":{\"placeholder\":\"Search on here ...\"},\"cart\":{\"minicart\":\"Shopping Cart\"},\"login\":{\"breadcrumb\":\"Login\",\"title\":\"Login\",\"buttons\":{\"login\":\"Login\"},\"input_text\":{\"email\":\"Email\",\"password\":\"Password\"}},\"register\":{\"breadcrumb\":\"Register\",\"title\":\"Register\",\"buttons\":{\"signup\":\"Register\"},\"input_text\":{\"name\":\"Full Name\",\"email\":\"Email\",\"password\":\"Password\",\"repassword\":\"Re Password\"}},\"logout\":{\"title\":\"Log out\"},\"homepage\":{\"feature\":{\"payment\":\"FAST SECURE PAYMENTS\",\"premium\":\"PREMIUM PRODUCTS\",\"delivery\":\"FREE & FAST DELIVERY\"}}}");
+module.exports = JSON.parse("{\"common\":{\"select_lang\":\"Language\",\"home_page\":\"Home page\",\"users_list\":\"Users List\",\"or\":\"or\",\"back\":\"Back\",\"show\":\"Show\",\"edit\":\"Edit\",\"delete\":\"Delete\",\"save\":\"Save\",\"changepw\":\"Change Password\"},\"search\":{\"placeholder\":\"Search on here ...\"},\"cart\":{\"minicart\":\"Shopping Cart\"},\"login\":{\"breadcrumb\":\"Login\",\"title\":\"Login\",\"buttons\":{\"login\":\"Login\"},\"input_text\":{\"email\":\"Email\",\"password\":\"Password\"}},\"register\":{\"breadcrumb\":\"Register\",\"title\":\"Register\",\"buttons\":{\"signup\":\"Register\"},\"input_text\":{\"name\":\"Full Name\",\"email\":\"Email\",\"password\":\"Password\",\"repassword\":\"Re Password\"}},\"logout\":{\"title\":\"Log out\"},\"homepage\":{\"feature\":{\"payment\":\"FAST SECURE PAYMENTS\",\"premium\":\"PREMIUM PRODUCTS\",\"delivery\":\"FREE & FAST DELIVERY\"}},\"user\":{\"password\":{\"oldpass\":\"Old Password\",\"newpass\":\"New Password\",\"alert\":\"Do Not Share Your Password\",\"alertlabel\":\"Warning!\"}}}");
 
 /***/ }),
 
@@ -52090,10 +52327,10 @@ var i18n = new vue_i18n__WEBPACK_IMPORTED_MODULE_1__["default"]({
 /*!***********************************!*\
   !*** ./resources/js/lang/vn.json ***!
   \***********************************/
-/*! exports provided: common, search, cart, login, register, logout, homepage, default */
+/*! exports provided: common, search, cart, login, register, logout, homepage, user, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"common\":{\"select_lang\":\"Ngôn ngữ\",\"home_page\":\"Trang chủ\",\"users_list\":\"Người dùng\",\"or\":\"hoặc\",\"back\":\"Quay Lại\",\"show\":\"Hiển thị\",\"edit\":\"Sửa\",\"delete\":\"Xóa\"},\"search\":{\"placeholder\":\"Nhập tìm kiếm tại đây ...\"},\"cart\":{\"minicart\":\"Giỏ Hàng\"},\"login\":{\"breadcrumb\":\"Đăng nhập\",\"title\":\"Đăng nhập\",\"buttons\":{\"login\":\"Đăng nhập\"},\"input_text\":{\"email\":\"Địa chỉ email\",\"password\":\"Mật khẩu\"}},\"register\":{\"breadcrumb\":\"Đăng ký\",\"title\":\"Đăng ký\",\"buttons\":{\"signup\":\"Đăng ký\"},\"input_text\":{\"name\":\"Họ và tên\",\"email\":\"Địa chỉ email\",\"password\":\"Mật khẩu\",\"repassword\":\"Nhập lại mật khẩu\"}},\"logout\":{\"title\":\"Đăng xuất\"},\"homepage\":{\"feature\":{\"payment\":\"THANH TOÁN NHANH CHÓNG\",\"premium\":\"SẢN PHẨM CAO CẤP\",\"delivery\":\"MIỄN PHÍ GIAO HÀNG\"}}}");
+module.exports = JSON.parse("{\"common\":{\"select_lang\":\"Ngôn ngữ\",\"home_page\":\"Trang chủ\",\"users_list\":\"Người dùng\",\"or\":\"hoặc\",\"back\":\"Quay Lại\",\"show\":\"Hiển thị\",\"edit\":\"Sửa\",\"delete\":\"Xóa\",\"save\":\"Lưu\",\"changepw\":\"Đổi mật khẩu\"},\"search\":{\"placeholder\":\"Nhập tìm kiếm tại đây ...\"},\"cart\":{\"minicart\":\"Giỏ Hàng\"},\"login\":{\"breadcrumb\":\"Đăng nhập\",\"title\":\"Đăng nhập\",\"buttons\":{\"login\":\"Đăng nhập\"},\"input_text\":{\"email\":\"Địa chỉ email\",\"password\":\"Mật khẩu\"}},\"register\":{\"breadcrumb\":\"Đăng ký\",\"title\":\"Đăng ký\",\"buttons\":{\"signup\":\"Đăng ký\"},\"input_text\":{\"name\":\"Họ và tên\",\"email\":\"Địa chỉ email\",\"password\":\"Mật khẩu\",\"repassword\":\"Nhập lại mật khẩu\"}},\"logout\":{\"title\":\"Đăng xuất\"},\"homepage\":{\"feature\":{\"payment\":\"THANH TOÁN NHANH CHÓNG\",\"premium\":\"SẢN PHẨM CAO CẤP\",\"delivery\":\"MIỄN PHÍ GIAO HÀNG\"}},\"user\":{\"password\":{\"oldpass\":\"Mật khẩu cũ\",\"newpass\":\"Mật khẩu mới\",\"alert\":\"Vui lòng không chia sẻ mật khẩu của bạn\",\"alertlabel\":\"Cảnh báo!\"}}}");
 
 /***/ }),
 
