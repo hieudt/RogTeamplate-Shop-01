@@ -9,7 +9,10 @@
         "edit" : "Sửa",
         "delete" : "Xóa",
         "save" : "Lưu",
-        "changepw" : "Đổi mật khẩu"
+        "changepw" : "Đổi mật khẩu",
+        "select_all" : "Chọn tất cả",
+        "unselect_all" : "Bỏ Chọn tất cả",
+        "records_checked" : "Bản ghi được chọn"
     },
     "search" : {
         "placeholder" : "Nhập tìm kiếm tại đây ..."

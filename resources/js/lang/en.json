@@ -9,7 +9,10 @@
         "edit" : "Edit",
         "delete" : "Delete",
         "save" : "Save",
-        "changepw" : "Change Password"
+        "changepw" : "Change Password",
+        "select_all" : "Select All",
+        "unselect_all" : "Unselect All",
+        "records_checked" : "Records Checked"
     },
     "search" : {
         "placeholder" : "Search on here ..."
