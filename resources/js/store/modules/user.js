@@ -135,10 +135,10 @@ export default {
                 })
             })
         },
-        delete({ commit }, data) {
+        delete({ commit }, id) {
             return new Promise ((resolve, reject) => {
                 http
-                .delete(`${RESOURCE_USER}/${data.id}`)
+                .delete(`${RESOURCE_USER}/${id}`)
                 .then(function (response) {
                     commit('DELETE_SUCCESS')
                     resolve(response)
@@ -149,10 +149,10 @@ export default {
                 })
             })
         },
-        fetch({ commit }, token) {
+        fetch({ commit }, page) {
             return new Promise ((resolve, reject) => {
                 http
-                .get(RESOURCE_USER)
+                .get(`${RESOURCE_USER}?page=${page}`)
                 .then(function (response) {
                     commit('FETCH', response.data)
                     resolve(response)

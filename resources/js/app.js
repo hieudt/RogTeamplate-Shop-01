@@ -23,7 +23,6 @@ const router = new VueRouter({
     mode: 'history'
 });
 window.events = new Vue();
-
 router.beforeEach((to, from, next) => {
     const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
     const currentUser = index.state.user.user;

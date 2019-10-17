@@ -17,6 +17,8 @@
 	<section class="category-section spad">
 		<div class="container">
 			<div class="row">
+                <!-- <li v-for="user in users.data" v-text="user"></li>
+                <pagination :data="users" v-on:pagination-change-page="getResults"></pagination> -->
 				<table class="table">
                     <thead>
                         <tr>
@@ -27,15 +29,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="user in users">
+                        <tr v-for="user in users.data">
                             <td>{{ user.id }}</td>
                             <td>{{ user.name }}</td>
                             <td>{{ user.email }}</td>
                             <td><router-link :to="{ name: 'user.show', params: { id: user.id }}" class='btn btn-success'>{{ $t('common.show') }}</router-link></td>
-                            <td><router-link :to="{ name: 'user.edit', params: { id: user.id }}" class='btn btn-primary'>{{ $t('common.edit') }}</router-link></td>
+                            <td><a href="#" class="btn btn-primary">{{ $t('common.edit') }}</a></td>
                             <td><a href="#" class="btn btn-danger" @click="_delete(user.id)">{{ $t('common.delete') }}</a></td>
                         </tr>
                     </tbody>
+                    <tfoot>
+                        <pagination :data="users" v-on:pagination-change-page="getResults"></pagination>
+                    </tfoot>
                 </table>
 			</div>
 		</div>
@@ -45,10 +50,14 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
+import pagination from 'laravel-vue-pagination'
 
 export default {
+    components: {
+        pagination
+    },
     mounted() {
-        this.$store.dispatch('user/fetch', this.token)
+        this.$store.dispatch('user/fetch', 1)
     },
     computed : {
         ...mapGetters({
@@ -57,16 +66,16 @@ export default {
 		})
     },
     methods: {
-      _delete: function(userId) {
-        this.$store.dispatch('user/delete', {
-            token: this.token,
-            id: userId
-        })
-        .then(() => this.$store.dispatch('user/fetch', this.token))
-      },
+        _delete: function(userId) {
+            this.$store.dispatch('user/delete', userId)
+            .then(() => this.$store.dispatch('user/fetch', 1))
+        },
+        getResults(page) {
+            if (typeof page === 'undefined') {
+                page = 1;
+            }
+            this.$store.dispatch('user/fetch', page)
+        },
     },
-	created () {
-        console.log(this.$store.getters.user.token)
-	}
 }
 </script>
