@@ -50009,6 +50009,39 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /***/ }),
 
+/***/ "./resources/js/helpers/interceptors.js":
+/*!**********************************************!*\
+  !*** ./resources/js/helpers/interceptors.js ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/store */ "./resources/js/store/index.js");
+
+
+var http = axios__WEBPACK_IMPORTED_MODULE_0___default.a.create({
+  timeout: 1000
+});
+http.interceptors.request.use(function (config) {
+  var token = _store__WEBPACK_IMPORTED_MODULE_1__["default"].getters['user/getToken'];
+
+  if (token) {
+    config.headers['Authorization'] = "Bearer ".concat(token);
+    config.headers['Accept'] = 'application/json';
+  }
+
+  return config;
+}, function (err) {
+  return Promise.reject(err);
+});
+/* harmony default export */ __webpack_exports__["default"] = (http);
+
+/***/ }),
+
 /***/ "./resources/js/lang/en.json":
 /*!***********************************!*\
   !*** ./resources/js/lang/en.json ***!
@@ -50281,6 +50314,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/api */ "./resources/js/api.js");
 /* harmony import */ var q__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! q */ "./node_modules/q/q.js");
 /* harmony import */ var q__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(q__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _helpers_interceptors__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/helpers/interceptors */ "./resources/js/helpers/interceptors.js");
+
 
 
 
@@ -50325,7 +50360,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     REGISTER_FAIL: function REGISTER_FAIL(state, msg) {
       for (var el in msg) {
-        console.log(msg[el]);
         Vue.notify({
           group: 'foo',
           type: 'error',
@@ -50339,7 +50373,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     FETCH_ONE: function FETCH_ONE(state, user) {
       state.userShow = user;
-      console.log(state);
     },
     LOGIN_SUCCESS: function LOGIN_SUCCESS(state, payload) {
       Vue.notify({
@@ -50352,13 +50385,11 @@ __webpack_require__.r(__webpack_exports__);
         token: payload.access_token
       });
       state.token = payload.access_token;
-      console.log(payload);
     },
     LOGIN_ERROR: function LOGIN_ERROR(state, msg) {
       var flag = true;
 
       for (var el in msg) {
-        console.log(msg[el]);
         Vue.notify({
           group: 'foo',
           type: 'error',
@@ -50391,44 +50422,39 @@ __webpack_require__.r(__webpack_exports__);
     SET_LANG: function SET_LANG(state, payload) {
       console.log(payload);
       _app__WEBPACK_IMPORTED_MODULE_0__["default"].$i18n.locale = payload;
+    },
+    DELETE_SUCCESS: function DELETE_SUCCESS(state) {
+      Vue.notify({
+        group: 'foo',
+        type: 'success',
+        text: 'Delete Successfully'
+      });
+    },
+    DELETE_ERROR: function DELETE_ERROR(state) {
+      Vue.notify({
+        group: 'foo',
+        type: 'error',
+        text: 'Delete errors'
+      });
     }
   },
   actions: {
     "delete": function _delete(_ref, data) {
       var commit = _ref.commit;
       return new Promise(function (resolve, reject) {
-        axios__WEBPACK_IMPORTED_MODULE_1___default.a.create({
-          headers: {
-            'Accept': 'application/json',
-            'Content-type': 'application/json',
-            'Authorization': 'Bearer ' + data.token
-          }
-        })["delete"]("".concat(_api__WEBPACK_IMPORTED_MODULE_2__["RESOURCE_USER"], "/").concat(data.id)).then(function (response) {
-          Vue.notify({
-            group: 'foo',
-            type: 'success',
-            text: 'Delete Successfully'
-          });
+        _helpers_interceptors__WEBPACK_IMPORTED_MODULE_4__["default"]["delete"]("".concat(_api__WEBPACK_IMPORTED_MODULE_2__["RESOURCE_USER"], "/").concat(data.id)).then(function (response) {
+          commit('DELETE_SUCCESS');
           resolve(response);
         })["catch"](function (error) {
-          Vue.notify({
-            group: 'foo',
-            type: 'error',
-            text: 'Error'
-          });
+          commit('DELETE_ERROR');
+          reject(error);
         });
       });
     },
     fetch: function fetch(_ref2, token) {
       var commit = _ref2.commit;
       return new Promise(function (resolve, reject) {
-        axios__WEBPACK_IMPORTED_MODULE_1___default.a.create({
-          headers: {
-            'Accept': 'application/json',
-            'Content-type': 'application/json',
-            'Authorization': 'Bearer ' + token
-          }
-        }).get(_api__WEBPACK_IMPORTED_MODULE_2__["RESOURCE_USER"]).then(function (response) {
+        _helpers_interceptors__WEBPACK_IMPORTED_MODULE_4__["default"].get(_api__WEBPACK_IMPORTED_MODULE_2__["RESOURCE_USER"]).then(function (response) {
           commit('FETCH', response.data);
           resolve(response);
         })["catch"]();
@@ -50437,13 +50463,7 @@ __webpack_require__.r(__webpack_exports__);
     fetchOne: function fetchOne(_ref3, data) {
       var commit = _ref3.commit;
       return new Promise(function (resolve, reject) {
-        axios__WEBPACK_IMPORTED_MODULE_1___default.a.create({
-          headers: {
-            'Accept': 'application/json',
-            'Content-type': 'application/json',
-            'Authorization': 'Bearer ' + data.token
-          }
-        }).get("".concat(_api__WEBPACK_IMPORTED_MODULE_2__["RESOURCE_USER"], "/").concat(data.id)).then(function (response) {
+        _helpers_interceptors__WEBPACK_IMPORTED_MODULE_4__["default"].get("".concat(_api__WEBPACK_IMPORTED_MODULE_2__["RESOURCE_USER"], "/").concat(data.id)).then(function (response) {
           commit('FETCH_ONE', response.data[0]);
           resolve(response);
         })["catch"]();

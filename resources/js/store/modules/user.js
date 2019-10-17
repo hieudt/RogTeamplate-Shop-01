@@ -2,6 +2,7 @@ import app from '@/app';
 import axios from 'axios';
 import {RESOURCE_USER , HEADER} from '@/api';
 import { resolve, reject } from 'q';
+import http from '@/helpers/interceptors'
 
 export default {
     namespaced: true,
@@ -31,7 +32,6 @@ export default {
         },
         REGISTER_FAIL(state, msg) {
             for (var el in msg) {
-                console.log(msg[el]);
                 Vue.notify({
                     group: 'foo',
                     type: 'error',
@@ -45,7 +45,6 @@ export default {
         },
         FETCH_ONE(state, user) {
             state.userShow = user
-            console.log(state)
         },
         LOGIN_SUCCESS(state, payload) {
             Vue.notify({
@@ -56,12 +55,10 @@ export default {
             state.loggedStatus = true
             state.user = Object.assign({}, payload.user, { token: payload.access_token })
             state.token = payload.access_token
-            console.log(payload)
         },
         LOGIN_ERROR(state, msg) {
             let flag = true;
             for (var el in msg) {
-                console.log(msg[el]);
                 Vue.notify({
                     group: 'foo',
                     type: 'error',
@@ -93,45 +90,40 @@ export default {
         SET_LANG(state, payload) {
             console.log(payload);
             app.$i18n.locale = payload
+        },
+        DELETE_SUCCESS(state) {
+            Vue.notify({
+                group: 'foo',
+                type: 'success',
+                text: 'Delete Successfully'
+            })
+        },
+        DELETE_ERROR(state) {
+            Vue.notify({
+                group: 'foo',
+                type: 'error',
+                text: 'Delete errors'
+            })
         }
     },
     actions: {
         delete({ commit }, data) {
             return new Promise ((resolve, reject) => {
-                axios.create({
-                    headers: {
-                        'Accept' : 'application/json',
-                        'Content-type' : 'application/json',
-                        'Authorization' : 'Bearer '+data.token,
-                    }
-                })
+                http
                 .delete(`${RESOURCE_USER}/${data.id}`)
                 .then(function (response) {
-                    Vue.notify({
-                        group: 'foo',
-                        type: 'success',
-                        text: 'Delete Successfully'
-                    })
+                    commit('DELETE_SUCCESS')
                     resolve(response)
                 })
                 .catch(function (error) {
-                    Vue.notify({
-                        group: 'foo',
-                        type: 'error',
-                        text: 'Error'
-                    })
+                    commit('DELETE_ERROR')
+                    reject(error)
                 })
             })
         },
         fetch({ commit }, token) {
             return new Promise ((resolve, reject) => {
-                axios.create({
-                    headers: {
-                        'Accept' : 'application/json',
-                        'Content-type' : 'application/json',
-                        'Authorization' : 'Bearer '+token,
-                    }
-                })
+                http
                 .get(RESOURCE_USER)
                 .then(function (response) {
                     commit('FETCH', response.data)
@@ -142,13 +134,7 @@ export default {
         },
         fetchOne({ commit }, data) {
             return new Promise ((resolve, reject) => {
-                axios.create({
-                    headers: {
-                        'Accept' : 'application/json',
-                        'Content-type': 'application/json',
-                        'Authorization': 'Bearer '+data.token,
-                    }
-                })
+                http
                 .get(`${RESOURCE_USER}/${data.id}`)
                 .then(function (response) {
                     commit('FETCH_ONE', response.data[0])
