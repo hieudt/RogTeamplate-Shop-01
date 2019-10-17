@@ -31,7 +31,12 @@
                             <td>{{ user.email }}</td>
                         </tr>
                         <tr>
-                            <td><router-link :to="{name: 'user.list'}" class="btn btn-dark">{{ $t('common.back') }}</router-link></td>
+                            <td>
+                                <router-link :to="{name: 'user.list'}" class="btn btn-dark">{{ $t('common.back') }}</router-link>
+                            </td>
+                            <td>
+                                <router-link :to="{ name: 'user.edit', params: { id: user.id }}" class="btn btn-primary">{{ $t('common.edit') }}</router-link>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

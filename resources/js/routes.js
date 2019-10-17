@@ -7,6 +7,7 @@ import Register from '@comp/Register.vue'
 import Login from '@comp/Login.vue'
 import UserList from '@comp/Users/List.vue'
 import ShowUser from '@comp/Users/ShowUser.vue'
+import EditUser from '@comp/Users/EditUser.vue'
 
 const routes = [
     {
@@ -67,6 +68,11 @@ const routes = [
                 path: 'show/:id',
                 name: 'user.show',
                 component: ShowUser,
+            },
+            {
+                path: 'edit/:id',
+                name: 'user.edit',
+                component: EditUser,
             }
         ]
     }

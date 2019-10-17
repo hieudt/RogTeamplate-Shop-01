@@ -32,7 +32,7 @@
                             <td>{{ user.name }}</td>
                             <td>{{ user.email }}</td>
                             <td><router-link :to="{ name: 'user.show', params: { id: user.id }}" class='btn btn-success'>{{ $t('common.show') }}</router-link></td>
-                            <td><a href="#" class="btn btn-primary">{{ $t('common.edit') }}</a></td>
+                            <td><router-link :to="{ name: 'user.edit', params: { id: user.id }}" class='btn btn-primary'>{{ $t('common.edit') }}</router-link></td>
                             <td><a href="#" class="btn btn-danger" @click="_delete(user.id)">{{ $t('common.delete') }}</a></td>
                         </tr>
                     </tbody>

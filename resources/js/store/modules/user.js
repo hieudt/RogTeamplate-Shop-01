@@ -104,9 +104,37 @@ export default {
                 type: 'error',
                 text: 'Delete errors'
             })
+        },
+        UPDATE_SUCCESS(state) {
+            Vue.notify({
+                group: 'foo',
+                type: 'success',
+                text: 'Update Successfully'
+            })
+        },
+        UPDATE_ERROR(state) {
+            Vue.notify({
+                group: 'foo',
+                type: 'error',
+                text: 'Update errors'
+            })
         }
     },
     actions: {
+        update({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                http
+                .patch(`${RESOURCE_USER}/${data.id}`, data)
+                .then(function (response) {
+                    commit('UPDATE_SUCCESS')
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('UPDATE_ERROR')
+                    reject(error)
+                })
+            })
+        },
         delete({ commit }, data) {
             return new Promise ((resolve, reject) => {
                 http
