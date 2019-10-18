@@ -3041,14 +3041,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   data: function data() {
     return {
       checkedId: [],
-      selectAllButton: false
+      selectAllButton: false,
+      defaultSort: 'id',
+      defaultSortDir: 'asc'
     };
   },
   components: {
     pagination: laravel_vue_pagination__WEBPACK_IMPORTED_MODULE_1___default.a
   },
   mounted: function mounted() {
-    this.$store.dispatch('user/fetch', 1);
+    this.$store.dispatch('user/fetch', {
+      page: 1,
+      sort: this.defaultSort,
+      sortDir: this.defaultSortDir
+    });
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
     token: 'user/getToken',
@@ -3076,6 +3082,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     }
   }),
+  watch: {
+    defaultSort: function defaultSort(value) {
+      this.$store.dispatch('user/fetch', {
+        page: 1,
+        sort: this.defaultSort,
+        sortDir: this.defaultSortDir
+      });
+    },
+    defaultSortDir: function defaultSortDir(value) {
+      this.$store.dispatch('user/fetch', {
+        page: 1,
+        sort: this.defaultSort,
+        sortDir: this.defaultSortDir
+      });
+    }
+  },
   methods: {
     unselectAll: function unselectAll() {
       var self = this;
@@ -3096,7 +3118,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       this.arrayRemoveByIndex(this.checkedId, userId);
       this.$store.dispatch('user/delete', userId).then(function () {
-        return _this2.$store.dispatch('user/fetch', 1);
+        return _this2.$store.dispatch('user/fetch', {
+          page: 1,
+          sort: _this2.defaultSort,
+          sortDir: _this2.defaultSortDir
+        });
       });
     },
     getResults: function getResults(page) {
@@ -3104,11 +3130,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         page = 1;
       }
 
-      this.$store.dispatch('user/fetch', page);
+      this.$store.dispatch('user/fetch', {
+        page: page,
+        sort: this.defaultSort,
+        sortDir: this.defaultSortDir
+      });
     },
     arrayRemoveByIndex: function arrayRemoveByIndex(array, userId) {
       var index = array.indexOf(userId);
       if (index !== -1) array.splice(index, 1);
+    },
+    sort: function sort(s) {
+      if (s === this.defaultSort) {
+        this.defaultSortDir = this.defaultSortDir === 'asc' ? 'desc' : 'asc';
+      }
+
+      this.defaultSort = s;
     }
   }
 });
@@ -31291,7 +31328,47 @@ var render = function() {
             ),
             _vm._v(" "),
             _c("table", { staticClass: "table table-hover" }, [
-              _vm._m(1),
+              _c("thead", [
+                _c("tr", [
+                  _c(
+                    "th",
+                    {
+                      on: {
+                        click: function($event) {
+                          return _vm.sort("id")
+                        }
+                      }
+                    },
+                    [_vm._v("ID")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "th",
+                    {
+                      on: {
+                        click: function($event) {
+                          return _vm.sort("name")
+                        }
+                      }
+                    },
+                    [_vm._v("Name")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "th",
+                    {
+                      on: {
+                        click: function($event) {
+                          return _vm.sort("email")
+                        }
+                      }
+                    },
+                    [_vm._v("Email")]
+                  ),
+                  _vm._v(" "),
+                  _c("th", { attrs: { colspan: "3" } }, [_vm._v("Action")])
+                ])
+              ]),
               _vm._v(" "),
               _c(
                 "tbody",
@@ -31524,22 +31601,6 @@ var staticRenderFns = [
           _c("a", { attrs: { href: "" } }, [_vm._v("Users")]),
           _vm._v(" /\n\t\t\t")
         ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("td", [_vm._v("ID")]),
-        _vm._v(" "),
-        _c("td", [_vm._v("Name")]),
-        _vm._v(" "),
-        _c("td", {}, [_vm._v("Email")]),
-        _vm._v(" "),
-        _c("td", { attrs: { colspan: "3" } }, [_vm._v("Action")])
       ])
     ])
   }
@@ -53013,10 +53074,10 @@ __webpack_require__.r(__webpack_exports__);
         });
       });
     },
-    fetch: function fetch(_ref3, page) {
+    fetch: function fetch(_ref3, data) {
       var commit = _ref3.commit;
       return new Promise(function (resolve, reject) {
-        _helpers_interceptors__WEBPACK_IMPORTED_MODULE_4__["default"].get("".concat(_api__WEBPACK_IMPORTED_MODULE_2__["RESOURCE_USER"], "?page=").concat(page)).then(function (response) {
+        _helpers_interceptors__WEBPACK_IMPORTED_MODULE_4__["default"].get("".concat(_api__WEBPACK_IMPORTED_MODULE_2__["RESOURCE_USER"], "?page=").concat(data.page, "&sort=").concat(data.sort, "&sortDir=").concat(data.sortDir)).then(function (response) {
           commit('FETCH', response.data);
           resolve(response);
         })["catch"]();

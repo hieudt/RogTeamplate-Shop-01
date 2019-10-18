@@ -149,10 +149,10 @@ export default {
                 })
             })
         },
-        fetch({ commit }, page) {
+        fetch({ commit }, data) {
             return new Promise ((resolve, reject) => {
                 http
-                .get(`${RESOURCE_USER}?page=${page}`)
+                .get(`${RESOURCE_USER}?page=${data.page}&sort=${data.sort}&sortDir=${data.sortDir}`)
                 .then(function (response) {
                     commit('FETCH', response.data)
                     resolve(response)

@@ -18,9 +18,9 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $users = User::paginate(10);
+    public function index(Request $req)
+    {   
+        $users = User::orderBy($req->sort, $req->sortDir)->paginate(10);
 
         return response()->json($users);
     }

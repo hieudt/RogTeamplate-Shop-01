@@ -25,10 +25,10 @@
 				<table class="table table-hover">
                     <thead>
                         <tr>
-                            <td>ID</td>
-                            <td>Name</td>
-                            <td class="">Email</td>
-                            <td colspan="3">Action</td>
+                            <th @click="sort('id')">ID</th>
+                            <th @click="sort('name')">Name</th>
+                            <th @click="sort('email')">Email</th>
+                            <th colspan="3">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -69,13 +69,15 @@ export default {
         return {
             checkedId: [],
             selectAllButton: false,
+            defaultSort:'id',
+            defaultSortDir:'asc'
         }
     },
     components: {
         pagination
     },
     mounted() {
-        this.$store.dispatch('user/fetch', 1)
+        this.$store.dispatch('user/fetch', {page:1, sort: this.defaultSort, sortDir: this.defaultSortDir})
     },
     computed : {
         ...mapGetters({
@@ -101,6 +103,14 @@ export default {
                 else
                     this.checkedId = checkedId
             }
+        },
+    },
+    watch: {
+        defaultSort: function (value) {
+            this.$store.dispatch('user/fetch', {page:1, sort: this.defaultSort, sortDir: this.defaultSortDir})
+        },
+        defaultSortDir: function (value) {
+            this.$store.dispatch('user/fetch', {page:1, sort: this.defaultSort, sortDir: this.defaultSortDir})
         }
     },
     methods: {
@@ -122,17 +132,23 @@ export default {
         _delete: function(userId) {
             this.arrayRemoveByIndex(this.checkedId, userId)
             this.$store.dispatch('user/delete', userId)
-            .then(() => this.$store.dispatch('user/fetch', 1))
+            .then(() => this.$store.dispatch('user/fetch', {page:1, sort: this.defaultSort, sortDir: this.defaultSortDir}))
         },
         getResults: function (page) {
             if (typeof page === 'undefined') {
                 page = 1
             }
-            this.$store.dispatch('user/fetch', page)
+            this.$store.dispatch('user/fetch', {page: page, sort: this.defaultSort, sortDir: this.defaultSortDir})
         },
         arrayRemoveByIndex: function (array, userId) {
             var index = array.indexOf(userId)
             if (index !== -1) array.splice(index, 1)
+        },
+        sort: function(s) {
+            if(s === this.defaultSort) {
+            this.defaultSortDir = this.defaultSortDir==='asc'?'desc':'asc';
+            }
+            this.defaultSort = s;
         }
     },
 }
