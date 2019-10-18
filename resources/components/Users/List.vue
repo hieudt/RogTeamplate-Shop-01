@@ -16,29 +16,46 @@
 	<!-- Category section -->
 	<section class="category-section spad">
 		<div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <transition name="fade" mode="out-in" appear>
+                        <div class="alert alert-warning" v-show="checkedId.length > 0">
+                            {{ checkedId.length }} {{ $t('common.records_checked') }}
+                        </div>
+                    </transition>
+                </div>
+                <div class="col-md-4 mt-3">
+                    <input type="checkbox" v-model="showId"> ID
+                    <input type="checkbox" v-model="showEmail"> EMAIL
+                    <input type="checkbox" v-model="showName"> NAME
+                </div>
+                <div class="col-md-4 mb-2">
+                    <form class="header-search-form">
+                        <input type="text" placeholder="Nhập tìm kiếm tại đây ...">
+                        <button><i class="flaticon-search"></i></button>
+                    </form>
+                </div>
+            </div>
 			<div class="row">
-                <transition name="fade" mode="out-in" appear>
-                    <div class="alert alert-warning" v-show="checkedId.length > 0">
-                        {{ checkedId.length }} {{ $t('common.records_checked') }}
-                    </div>
-                </transition>
 				<table class="table table-hover">
                     <thead>
                         <tr>
-                            <th @click="sort('id')">ID</th>
-                            <th @click="sort('name')">Name</th>
-                            <th @click="sort('email')">Email</th>
-                            <th colspan="3">Action</th>
+                            <th @click="sort('id')" v-show="showId">ID</th>
+                            <th @click="sort('name')" v-show="showName">Name</th>
+                            <th @click="sort('email')" v-show="showEmail">Email</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="user in users.data" :class="{hover: checkedId.includes(user.id)}">
-                            <td @click="pushCheckbox(user.id)" ><input type="checkbox" :name="user.id" :value="user.id" v-model="checkedId"> {{ user.id }}</td>
-                            <td @click="pushCheckbox(user.id)" >{{ user.name }}</td>
-                            <td @click="pushCheckbox(user.id)" >{{ user.email }}</td>
-                            <td><router-link :to="{ name: 'user.show', params: { id: user.id }}" class='btn btn-success'>{{ $t('common.show') }}</router-link></td>
-                            <td><router-link :to="{ name: 'user.edit', params: { id: user.id }}" class='btn btn-primary'>{{ $t('common.edit') }}</router-link></td>
-                            <td><button class="btn btn-danger" @click="_delete(user.id)">{{ $t('common.delete') }}</button></td>
+                            <td @click="pushCheckbox(user.id)" v-show="showId"><input type="checkbox" :name="user.id" :value="user.id" v-model="checkedId"> {{ user.id }}</td>
+                            <td @click="pushCheckbox(user.id)" v-show="showName">{{ user.name }}</td>
+                            <td @click="pushCheckbox(user.id)" v-show="showEmail">{{ user.email }}</td>
+                            <td>
+                                <router-link :to="{ name: 'user.show', params: { id: user.id }}" class='btn btn-success'>{{ $t('common.show') }}</router-link>
+                                <router-link :to="{ name: 'user.edit', params: { id: user.id }}" class='btn btn-primary'>{{ $t('common.edit') }}</router-link>
+                                <button class="btn btn-danger" @click="_delete(user.id)">{{ $t('common.delete') }}</button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -70,7 +87,10 @@ export default {
             checkedId: [],
             selectAllButton: false,
             defaultSort:'id',
-            defaultSortDir:'asc'
+            defaultSortDir:'asc',
+            showId: true,
+            showName: true,
+            showEmail: true
         }
     },
     components: {
