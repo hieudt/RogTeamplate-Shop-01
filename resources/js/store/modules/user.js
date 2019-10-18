@@ -149,6 +149,22 @@ export default {
                 })
             })
         },
+        deleteList({ commit }, arrayId) {
+            return new Promise ((resolve, reject) => {
+                http
+                .post(`${RESOURCE_USER}/deletelist`, {
+                    data_del: arrayId
+                })
+                .then(function (response) {
+                    commit('DELETE_SUCCESS')
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('DELETE_ERROR')
+                    reject(error)
+                })
+            })
+        },
         fetch({ commit }, data) {
             return new Promise ((resolve, reject) => {
                 http

@@ -10,6 +10,7 @@ use App\Http\Requests\UserUpdateRequest;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use DB;
 
 class AuthController extends Controller
 {
@@ -102,6 +103,19 @@ class AuthController extends Controller
         $user->delete();
         return response()
             ->json(['message' => 'Success: You have deleted the user']);
+    }
+
+    public function destroyMultiple(Request $request) {
+        DB::beginTransaction();
+        try {
+            User::whereIn('id', $request->data_del)->delete();
+            DB::commit();
+
+            return response()->json(['message' => 'Success: You have deleted the user']);
+        } catch (Exception $th) {
+            DB::rollBack();
+            throw new Exception($th->getMessage());
+        }
     }
 
     public function edit($id)

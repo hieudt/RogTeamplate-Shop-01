@@ -14,12 +14,9 @@
 Route::post('api/users/auth', 'AuthController@login');
 Route::post('api/users', 'AuthController@store');
 
-Route::get('api/users/getall', function () {
-    return \App\User::paginate(10);
-});
-
 Route::group(['middleware' => ['api.check', 'auth:api'],'prefix' => 'api'], function () {
-    Route::resource('users', 'AuthController')->except(['store']);  
+    Route::resource('users', 'AuthController')->except(['store']);
+    Route::post('users/deletelist', 'AuthController@destroyMultiple');  
 });
 
 Route::view('/{any}', 'app')

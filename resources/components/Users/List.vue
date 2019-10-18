@@ -52,7 +52,7 @@
                     <button class="btn btn-primary mr-2" v-show="checkedId.length > 0" @click="unselectAll">{{ $t('common.unselect_all') }}</button>
                 </transition>
                 <transition name="router-anim">
-                    <button class="btn btn-danger mr-2" v-show="checkedId.length > 0" @click="">{{ $t('common.delete') }}</button>
+                    <button class="btn btn-danger mr-2" v-show="checkedId.length > 0" @click="confirmMultiDelete">{{ $t('common.delete') }}</button>
                 </transition>
             </div>
 		</div>
@@ -74,7 +74,7 @@ export default {
         }
     },
     components: {
-        pagination
+        pagination,
     },
     mounted() {
         this.$store.dispatch('user/fetch', {page:1, sort: this.defaultSort, sortDir: this.defaultSortDir})
@@ -107,13 +107,31 @@ export default {
     },
     watch: {
         defaultSort: function (value) {
-            this.$store.dispatch('user/fetch', {page:1, sort: this.defaultSort, sortDir: this.defaultSortDir})
+            this.fetchUser()
         },
         defaultSortDir: function (value) {
-            this.$store.dispatch('user/fetch', {page:1, sort: this.defaultSort, sortDir: this.defaultSortDir})
+            this.fetchUser()
         }
     },
     methods: {
+        fetchUser: function () {
+            this.$store.dispatch('user/fetch', {page:1, sort: this.defaultSort, sortDir: this.defaultSortDir})
+        },
+        confirmMultiDelete: function () {
+            let self = this;
+            this.$dlg.alert('Delete ?', function() {
+                self.$store.dispatch('user/deleteList', self.checkedId)
+                self.fetchUser()
+                self.checkedId = []
+            }, {
+                messageType: 'confirm',
+                title: 'DElETE Records',
+                language: 'en',
+                cancelCallback: function(){
+                    // cancel 
+                }
+            })
+        },
         unselectAll: function () {
             let self = this
             this.users.data.forEach(function (user) {
@@ -127,17 +145,17 @@ export default {
             } else {
                 this.checkedId.push(userId)
             }
-
         },
         _delete: function(userId) {
             this.arrayRemoveByIndex(this.checkedId, userId)
             this.$store.dispatch('user/delete', userId)
-            .then(() => this.$store.dispatch('user/fetch', {page:1, sort: this.defaultSort, sortDir: this.defaultSortDir}))
+            .then(() => this.fetchUser())
         },
         getResults: function (page) {
             if (typeof page === 'undefined') {
                 page = 1
             }
+
             this.$store.dispatch('user/fetch', {page: page, sort: this.defaultSort, sortDir: this.defaultSortDir})
         },
         arrayRemoveByIndex: function (array, userId) {
@@ -146,8 +164,9 @@ export default {
         },
         sort: function(s) {
             if(s === this.defaultSort) {
-            this.defaultSortDir = this.defaultSortDir==='asc'?'desc':'asc';
+                this.defaultSortDir = this.defaultSortDir==='asc'?'desc':'asc';
             }
+
             this.defaultSort = s;
         }
     },
