@@ -16,61 +16,27 @@
 	<!-- Category section -->
 	<section class="category-section spad">
 		<div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <transition name="fade" mode="out-in" appear>
-                        <div class="alert alert-warning" v-show="checkedId.length > 0">
-                            {{ checkedId.length }} {{ $t('common.records_checked') }}
-                        </div>
-                    </transition>
+            <div>
+                <div style="margin-bottom: 10px">
+                <el-row>
+                    <el-col :span="18">
+                        <transition name="router-anim">
+                            <el-button type="danger" @click="confirmMultiDelete" v-show="selectedRow.length > 0">{{ $t('common.delete') }}</el-button>
+                        </transition>
+                    </el-col>
+
+                    <el-col :span="6">
+                    <el-input :placeholder="$t('search.placeholder')" v-model="filters[0].value"></el-input>
+                    </el-col>
+                </el-row>
                 </div>
-                <div class="col-md-4 mt-3">
-                    <input type="checkbox" v-model="showId"> ID
-                    <input type="checkbox" v-model="showEmail"> EMAIL
-                    <input type="checkbox" v-model="showName"> NAME
-                </div>
-                <div class="col-md-4 mb-2">
-                    <form class="header-search-form">
-                        <input type="text" placeholder="Nhập tìm kiếm tại đây ...">
-                        <button><i class="flaticon-search"></i></button>
-                    </form>
-                </div>
-            </div>
-			<div class="row">
-				<table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th @click="sort('id')" v-show="showId">ID</th>
-                            <th @click="sort('name')" v-show="showName">Name</th>
-                            <th @click="sort('email')" v-show="showEmail">Email</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="user in users.data" :class="{hover: checkedId.includes(user.id)}">
-                            <td @click="pushCheckbox(user.id)" v-show="showId"><input type="checkbox" :name="user.id" :value="user.id" v-model="checkedId"> {{ user.id }}</td>
-                            <td @click="pushCheckbox(user.id)" v-show="showName">{{ user.name }}</td>
-                            <td @click="pushCheckbox(user.id)" v-show="showEmail">{{ user.email }}</td>
-                            <td>
-                                <router-link :to="{ name: 'user.show', params: { id: user.id }}" class='btn btn-success'>{{ $t('common.show') }}</router-link>
-                                <router-link :to="{ name: 'user.edit', params: { id: user.id }}" class='btn btn-primary'>{{ $t('common.edit') }}</router-link>
-                                <button class="btn btn-danger" @click="_delete(user.id)">{{ $t('common.delete') }}</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <pagination :data="users" v-on:pagination-change-page="getResults"></pagination>
-			</div>
-             <div class="row mt-2">
-                <transition name="router-anim">
-                    <button class="btn btn-primary mr-2" @click="selectAll = true">{{ $t('common.select_all') }}</button>
-                </transition>
-                <transition name="router-anim">
-                    <button class="btn btn-primary mr-2" v-show="checkedId.length > 0" @click="unselectAll">{{ $t('common.unselect_all') }}</button>
-                </transition>
-                <transition name="router-anim">
-                    <button class="btn btn-danger mr-2" v-show="checkedId.length > 0" @click="confirmMultiDelete">{{ $t('common.delete') }}</button>
-                </transition>
+                <data-tables :loading="loading" :pagination-props="{ pageSizes: [5, 10, 15] }" :data="users.data" :action-col="actionCol" :filters="filters" @selection-change="handleSelectionChange">
+                    <el-table-column type="selection" width="55">
+                    </el-table-column>
+
+                    <el-table-column v-for="title in titles" :prop="title.prop" :label="title.label" :key="title.prop" sortable="custom">
+                    </el-table-column>
+                </data-tables>
             </div>
 		</div>
 	</section>
@@ -79,70 +45,73 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import pagination from 'laravel-vue-pagination'
 
 export default {
     data: function () {
         return {
-            checkedId: [],
-            selectAllButton: false,
-            defaultSort:'id',
-            defaultSortDir:'asc',
-            showId: true,
-            showName: true,
-            showEmail: true
+            loading:false,
+            selectedRow: [],
+            titles: [
+                {
+                    label : "ID",
+                    prop : "id",
+                },
+                {
+                    label: "email",
+                    prop: "email",
+                }
+            ],
+            filters: [{
+                prop: 'id',
+                value: ''
+            }],
+             actionCol: {
+                props: {
+                label: 'Action',
+            },
+            buttons: [{
+                props: {
+                    type: 'primary'
+                },
+                handler: row => {
+                    this.$message('Edit clicked')
+                    this.$router.push({ name: 'user.edit', params: { id: row.id } })
+                },
+                label: this.$t('common.edit'),
+            }, {
+                props : {
+                    type: 'danger'
+                },
+                handler: row => {
+                    this.users.data.splice(this.users.data.indexOf(row), 1)
+                    this.$store.dispatch('user/delete', row.id)
+                },
+                    label: this.$t('common.delete')
+                }]
+            },
         }
     },
-    components: {
-        pagination,
-    },
     mounted() {
-        this.$store.dispatch('user/fetch', {page:1, sort: this.defaultSort, sortDir: this.defaultSortDir})
+        this.$store.dispatch('user/fetch')
     },
     computed : {
         ...mapGetters({
             token : 'user/getToken',
             users : 'user/getUsers',
         }),
-        selectAll: {
-            get: function () {
-                return this.users.data ? this.checkedId.length == this.users.data.length : false;
-            },
-            set: function (value) {
-                var checkedId = []
-
-                if (value) {
-                    this.users.data.forEach(function (user) {
-                        checkedId.push(user.id)
-                    });
-                    this.selectAllButton = true
-                }
-
-                if (this.checkedId.length > 1)
-                    this.checkedId = this.checkedId.concat(checkedId.filter((item) => this.checkedId.indexOf(item) < 0))
-                else
-                    this.checkedId = checkedId
-            }
-        },
     },
     watch: {
-        defaultSort: function (value) {
-            this.fetchUser()
-        },
-        defaultSortDir: function (value) {
-            this.fetchUser()
-        }
     },
     methods: {
         fetchUser: function () {
-            this.$store.dispatch('user/fetch', {page:1, sort: this.defaultSort, sortDir: this.defaultSortDir})
+            this.$store.dispatch('user/fetch')
         },
         confirmMultiDelete: function () {
             let self = this;
             this.$dlg.alert('Delete ?', function() {
-                self.$store.dispatch('user/deleteList', self.checkedId)
-                self.fetchUser()
-                self.checkedId = []
+                let listIds = self.selectedRow.map(row => row.id)
+                self.$store.dispatch('user/deleteList', listIds)
+                self.multiDelete()
             }, {
                 messageType: 'confirm',
                 title: 'DElETE Records',
@@ -152,42 +121,14 @@ export default {
                 }
             })
         },
-        unselectAll: function () {
-            let self = this
-            this.users.data.forEach(function (user) {
-                self.arrayRemoveByIndex(self.checkedId, user.id)
+        handleSelectionChange(val) {
+            this.selectedRow = val
+        },
+        multiDelete() {
+            let self = this;
+            this.selectedRow.map(row => {
+                this.users.data.splice(this.users.data.indexOf(row), 1)
             })
-        },
-        pushCheckbox(userId) {
-            if (this.checkedId.includes(userId)) {
-                var index = this.checkedId.indexOf(userId)
-                if (index !== -1) this.checkedId.splice(index, 1)
-            } else {
-                this.checkedId.push(userId)
-            }
-        },
-        _delete: function(userId) {
-            this.arrayRemoveByIndex(this.checkedId, userId)
-            this.$store.dispatch('user/delete', userId)
-            .then(() => this.fetchUser())
-        },
-        getResults: function (page) {
-            if (typeof page === 'undefined') {
-                page = 1
-            }
-
-            this.$store.dispatch('user/fetch', {page: page, sort: this.defaultSort, sortDir: this.defaultSortDir})
-        },
-        arrayRemoveByIndex: function (array, userId) {
-            var index = array.indexOf(userId)
-            if (index !== -1) array.splice(index, 1)
-        },
-        sort: function(s) {
-            if(s === this.defaultSort) {
-                this.defaultSortDir = this.defaultSortDir==='asc'?'desc':'asc';
-            }
-
-            this.defaultSort = s;
         }
     },
 }

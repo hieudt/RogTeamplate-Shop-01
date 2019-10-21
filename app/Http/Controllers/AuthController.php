@@ -21,9 +21,9 @@ class AuthController extends Controller
      */
     public function index(Request $req)
     {   
-        $users = User::orderBy($req->sort, $req->sortDir)->paginate(10);
+        $users = User::all();
 
-        return response()->json($users);
+        return response()->json(['data' => $users]);
     }
 
     /**

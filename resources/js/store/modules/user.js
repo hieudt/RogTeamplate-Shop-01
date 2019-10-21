@@ -4,6 +4,7 @@ import {RESOURCE_USER , HEADER} from '@/api';
 import { resolve, reject } from 'q';
 import http from '@/helpers/interceptors'
 
+
 export default {
     namespaced: true,
     getters: {
@@ -165,10 +166,10 @@ export default {
                 })
             })
         },
-        fetch({ commit }, data) {
+        fetch({ commit }) {
             return new Promise ((resolve, reject) => {
                 http
-                .get(`${RESOURCE_USER}?page=${data.page}&sort=${data.sort}&sortDir=${data.sortDir}`)
+                .get(`${RESOURCE_USER}`)
                 .then(function (response) {
                     commit('FETCH', response.data)
                     resolve(response)

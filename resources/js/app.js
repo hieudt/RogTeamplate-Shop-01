@@ -6,18 +6,26 @@ import VueRouter from 'vue-router'
 import App from '../components/App.vue'
 import routes from './routes'
 import index from './store'
-import VueI18n from 'vue-i18n'
 import Notifications from 'vue-notification'
 import vDialogs from 'v-dialogs'
 import i18n from './lang/i18n'
 import VueLazyload from 'vue-lazyload'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+import vi from 'element-ui/lib/locale/lang/vi'
+import locale from 'element-ui/lib/locale'
+import VueDataTables from 'vue-data-tables'
 
-Vue.use(VueRouter);
-Vue.use(Notifications);
-Vue.use(vDialogs);
+locale.use(vi)
+
+Vue.use(VueRouter)
+Vue.use(Notifications)
+Vue.use(vDialogs)
+Vue.use(ElementUI)
 Vue.use(VueLazyload, {
     loading: 'https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif',
-});
+})
+Vue.use(VueDataTables)
 
 
 const router = new VueRouter({
