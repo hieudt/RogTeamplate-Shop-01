@@ -30,7 +30,11 @@
                     </el-col>
                 </el-row>
                 </div>
-                <data-tables :loading="loading" :pagination-props="{ pageSizes: [5, 10, 15] }" :data="users.data" :action-col="actionCol" :filters="filters" @selection-change="handleSelectionChange">
+                <div style="margin-bottom: 10px;">
+                    <span>Page current: </span>
+                    <el-input-number v-model="currentPage"></el-input-number>
+                </div>
+                <data-tables :loading="loading" :current-page.sync="currentPage" :pagination-props="{ pageSizes: [5, 10, 15] }" :data="users.data" :action-col="actionCol" :filters="filters" @selection-change="handleSelectionChange">
                     <el-table-column type="selection" width="55">
                     </el-table-column>
 
@@ -50,6 +54,7 @@ export default {
     data: function () {
         return {
             loading:false,
+            currentPage: 2,
             selectedRow: [],
             titles: [
                 {
@@ -62,7 +67,6 @@ export default {
                 }
             ],
             filters: [{
-                prop: 'id',
                 value: ''
             }],
              actionCol: {

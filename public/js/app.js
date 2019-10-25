@@ -4644,6 +4644,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -4651,6 +4655,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     return {
       loading: false,
+      currentPage: 2,
       selectedRow: [],
       titles: [{
         label: "ID",
@@ -4660,7 +4665,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         prop: "email"
       }],
       filters: [{
-        prop: 'id',
         value: ''
       }],
       actionCol: {
@@ -91780,16 +91784,44 @@ var render = function() {
             ),
             _vm._v(" "),
             _c(
+              "div",
+              { staticStyle: { "margin-bottom": "10px" } },
+              [
+                _c("span", [_vm._v("Page current: ")]),
+                _vm._v(" "),
+                _c("el-input-number", {
+                  model: {
+                    value: _vm.currentPage,
+                    callback: function($$v) {
+                      _vm.currentPage = $$v
+                    },
+                    expression: "currentPage"
+                  }
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
               "data-tables",
               {
                 attrs: {
                   loading: _vm.loading,
+                  "current-page": _vm.currentPage,
                   "pagination-props": { pageSizes: [5, 10, 15] },
                   data: _vm.users.data,
                   "action-col": _vm.actionCol,
                   filters: _vm.filters
                 },
-                on: { "selection-change": _vm.handleSelectionChange }
+                on: {
+                  "update:currentPage": function($event) {
+                    _vm.currentPage = $event
+                  },
+                  "update:current-page": function($event) {
+                    _vm.currentPage = $event
+                  },
+                  "selection-change": _vm.handleSelectionChange
+                }
               },
               [
                 _c("el-table-column", {
